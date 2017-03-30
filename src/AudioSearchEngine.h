@@ -20,7 +20,6 @@
 #include "AudioFeatures.h"
 #include "Common.h"
 #include "Distance.h"
-#include "ThreadPool.h"
 
 using namespace std;
 // using namespace fastdtw;

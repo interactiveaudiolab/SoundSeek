@@ -1,18 +1,18 @@
 {
-  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "DBE71B769F9525729C44A78EF78729031F0A15FD",
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "4E051CC284F7937C9005FC5F7714D6BC6FCCC151",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
 
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "DBE71B769F9525729C44A78EF78729031F0A15FD" : 0,
+    "26FACDE81BC30FD170C0E90874C9E7C4B41AC534" : 9223372036854775807,
     "97FB40C0DBC2D6928D970942B3DFD8DA8DEF669A" : 9223372036854775807,
-    "26FACDE81BC30FD170C0E90874C9E7C4B41AC534" : 9223372036854775807
+    "4E051CC284F7937C9005FC5F7714D6BC6FCCC151" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "1CACA17D-3694-414A-B17E-2F1D1C6FF146",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "DBE71B769F9525729C44A78EF78729031F0A15FD" : "SoundSeek\/",
+    "26FACDE81BC30FD170C0E90874C9E7C4B41AC534" : "AudioSearchCPP\/AudioSearchCLI\/AudioSearchCLI\/libs\/FastDTW-x\/",
     "97FB40C0DBC2D6928D970942B3DFD8DA8DEF669A" : "AudioSearchCPP\/",
-    "26FACDE81BC30FD170C0E90874C9E7C4B41AC534" : "AudioSearchCPP\/AudioSearchCLI\/AudioSearchCLI\/libs\/FastDTW-x\/"
+    "4E051CC284F7937C9005FC5F7714D6BC6FCCC151" : "SoundSeek\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "AudioSearchCLI",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -24,14 +24,14 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "26FACDE81BC30FD170C0E90874C9E7C4B41AC534"
     },
     {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/interactiveaudiolab\/SoundSeek",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "4E051CC284F7937C9005FC5F7714D6BC6FCCC151"
+    },
+    {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/michaeldonovan\/AudioSearchCPP.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "97FB40C0DBC2D6928D970942B3DFD8DA8DEF669A"
-    },
-    {
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/interactiveaudiolab\/SoundSeek",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DBE71B769F9525729C44A78EF78729031F0A15FD"
     }
   ]
 }
