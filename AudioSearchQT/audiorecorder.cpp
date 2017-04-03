@@ -335,7 +335,26 @@ void AudioRecorder::stopAudio()
     ui->statusbar->clearMessage();
 }
 
+void AudioRecorder::toggleAudio()
+{
+    if (mediaPlayer.state() == QMediaPlayer::PlayingState)
+        mediaPlayer.stop();
+    else
+        mediaPlayer.play();
+}
+
 QUrl AudioRecorder::pathToUrl(path p)
 {
     return QUrl::fromLocalFile(QString::fromUtf8(p.c_str()));
+}
+
+void AudioRecorder::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key())
+    {
+    case Qt::Key_Space:
+        toggleAudio();
+        break;
+    default:
+    }
 }

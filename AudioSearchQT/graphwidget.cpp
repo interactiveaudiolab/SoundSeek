@@ -166,6 +166,8 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
         zoomOut();
         break;
     case Qt::Key_Space:
+        audioParent->toggleAudio();
+        break;
     case Qt::Key_Enter:
         shuffle();
         break;

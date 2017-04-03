@@ -54,7 +54,7 @@
 #include <QListWidgetItem>
 #include <QMediaPlayer>
 #include <QAudioOutput>
-
+#include <QKeyEvent>
 
 #include "boost/filesystem.hpp"
 #include "../src/AudioSearchEngine.h"
@@ -83,6 +83,7 @@ public:
 
     void playAudio(QUrl pathToAudio);
     void searchByPath(QUrl searchPath = QUrl());
+    void toggleAudio();
 
 private slots:
     void setOutputLocation(QUrl path);
@@ -100,6 +101,9 @@ private slots:
     void onStateChanged(QMediaRecorder::State);
     void updateProgress(qint64 pos);
     void displayErrorMessage();
+
+protected:
+    void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
 private:
     QUrl pathToUrl(path p);
