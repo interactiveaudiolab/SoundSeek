@@ -58,6 +58,7 @@
 #include "edge.h"
 #include "node.h"
 #include "graphwidget.h"
+#include "common-utils.cpp"
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
@@ -236,6 +237,7 @@ void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
     //auto *collapseAction = menu.addAction("Hide children");
 
+    auto *openInFinderAction = menu.addAction("Reveal in Finder");
     auto *selectedAction = menu.exec(event->screenPos());
 
     if (selectedAction == likeAction)
@@ -252,6 +254,10 @@ void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     else if (selectedAction == expandAction)
     {
         expand();
+    }
+    else if (selectedAction == openInFinderAction)
+    {
+        revealFile(nullptr, QUrl::fromPercentEncoding(audioFile.toLocalFile().toLocal8Bit()));
     }
 //    else if (selectedAction == collapseAction)
 //    {

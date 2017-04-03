@@ -63,7 +63,12 @@
 #include <QMediaPlayer>
 #include <QAction>
 #include <QMenu>
+#include <QDesktopServices>
+#include <QFileDialog>
 
+#include "audiorecorder.h"
+
+class AudioRecorder;
 class Edge;
 class GraphWidget;
 QT_BEGIN_NAMESPACE
@@ -86,6 +91,7 @@ public:
     void calculateForces();
     bool advance();
     void expand();
+    void addChildNode(Node* node) { childlist.push_back(node); }
     // set the expanded member but don't change color/size or find children.
     void setExpanded(bool expanded_) { expanded = expanded_; }
     void collapse();
