@@ -30,7 +30,8 @@ SOURCES = \
     node.cpp \
     graphwidget.cpp \
     edge.cpp \
-    ../src/Distance.cpp
+    ../src/Distance.cpp \
+    common-utils.cpp
 
 FORMS += audiorecorder.ui
 

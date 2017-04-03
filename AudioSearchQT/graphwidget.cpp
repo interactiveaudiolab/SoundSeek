@@ -108,6 +108,15 @@ void GraphWidget::addNode(Node *parent, QUrl audioFile)
     getScene()->addItem(new Edge(parent, newNode));
     newNode->setPos(parent->pos().x() + rand()%20 - 10, parent->pos().y() + rand()%20 - 10);
 
+    parent->addChildNode(newNode);
+
+    QColor newColor(parent->getColor().lighter());
+    if (parent->getAudio() == QUrl::fromLocalFile(RECORD_PATH))
+        newColor.setHsvF(rand() % 100 / 100., .1, 1);
+    else
+        newColor.setHsvF(std::min((float)(parent->getColor().hsvHueF() + rand()%100/1000.f), 1.f), .1, 1); // vary the hue slightly
+    newNode->setColor(newColor);
+
     qDebug("New node added with audio: " + audioFile.toDisplayString().toUtf8());
 }
 

@@ -59,6 +59,10 @@
 #include "boost/filesystem.hpp"
 #include "../src/AudioSearchEngine.h"
 #include "graphwidget.h"
+#include "node.h"
+
+#define RECORD_PATH "/tmp/audiosearch_query.wav"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class AudioRecorder; }
@@ -78,6 +82,7 @@ public:
     ~AudioRecorder();
 
     void playAudio(QUrl pathToAudio);
+    void searchByPath(QUrl searchPath = QUrl());
 
 private slots:
     void setOutputLocation(QUrl path);
@@ -98,6 +103,7 @@ private slots:
 
 private:
     QUrl pathToUrl(path p);
+    std::string QUrlToString(QUrl path);
     void updateResults();
 
     Ui::AudioRecorder *ui;

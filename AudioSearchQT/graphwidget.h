@@ -78,6 +78,7 @@ public:
     QGraphicsScene* getScene() { return scene(); }
     void playAudio(QUrl audioFile);
     void setAudioParent(AudioRecorder* audioParent_) { audioParent = audioParent_; }
+    AudioRecorder* getAudioParent() { return audioParent; }
 public slots:
     void shuffle();
     void zoomIn();

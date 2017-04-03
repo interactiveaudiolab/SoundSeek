@@ -276,23 +276,9 @@ void Node::expand()
     radius += 5; // increase size
     color.setHsvF(color.hslHueF(), 1, 1); // increase saturation of color
 
-    // create and add child nodes
-    for (int i = 0; i < 4; ++i)
-    {
-            Node *newNode = new Node(graph);
-            childlist.push_back(newNode);
+    AudioRecorder *audioRecorder = graph->getAudioParent();
 
-            auto* scene = graph->getScene();
-
-            scene->addItem(newNode);
-            scene->addItem(new Edge(this, newNode));
-            newNode->setPos(pos().x() + 10 * (i - 2),  pos().y() - 10 * (i-2)); // not super important, nodes will arrange themselves to a certain extent
-
-            QColor newColor(color.lighter());
-            newColor.setHsvF(std::min((float)(color.hsvHueF() + rand()%100/1000.f), 1.f), .1, 1); // vary the hue slightly
-            newNode->setColor(newColor);
-
-    }
+    audioRecorder->searchByPath(audioFile);
 }
 
 void Node::collapse()

@@ -54,7 +54,6 @@
 
 #include "ui_audiorecorder.h"
 
-#define RECORD_PATH "/tmp/audiosearch_query.wav"
 
 
 AudioRecorder::AudioRecorder(QWidget *parent) :
@@ -202,17 +201,48 @@ void AudioRecorder::togglePause()
         audioRecorder->record();
 }
 
+// for finding neighbors of the initial query
 void AudioRecorder::search()
 {
     if (!queryRecorded)
         return;
     ui->statusbar->showMessage("Searching");
+
     searchEngine.search(RECORD_PATH);
+
     topResults = true;
     updateResults();
+
     ui->resultViewButton->setEnabled(true);
     //ui->statusbar->showMessage("Search %d files", searchEngine.getNumSearchFiles());
+
+    foreach(searchResult r, searchEngine.getNearestResultByFeature())
+    {
+        auto* parent = graph.findNode(QUrl::fromLocalFile(RECORD_PATH));
+        graph.addNode (parent, pathToUrl(r.p));
+    }
 }
+
+
+void AudioRecorder::searchByPath(QUrl searchPath)
+{
+    ui->statusbar->showMessage("Searching");
+
+    searchEngine.search(QUrlToString(searchPath));
+
+    foreach(searchResult r, searchEngine.getNearestResultByFeature())
+    {
+        cout << r.p << endl;
+        auto* parent = graph.findNode(searchPath);
+        graph.addNode (parent, pathToUrl(r.p));
+    }
+}
+
+std::string AudioRecorder::QUrlToString(QUrl path)
+{
+    return QUrl::fromPercentEncoding(path.toLocalFile().toLocal8Bit()).toStdString();
+}
+
 
 void AudioRecorder::setSearchDirectory()
 {
@@ -262,12 +292,6 @@ void AudioRecorder::updateResults()
         {
             ui->topResults->addItem(QString::fromUtf8(r.p.c_str()));
         }
-    }
-
-    foreach(searchResult r, searchEngine.getNearestResultByFeature())
-    {
-        auto* parent = graph.findNode(QUrl::fromLocalFile(RECORD_PATH));
-        graph.addNode (parent, pathToUrl(r.p));
     }
 }
 
