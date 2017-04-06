@@ -41,7 +41,8 @@ vector<double> distance (const AudioObject &a, const AudioObject &b, double dtw_
  *
  *  @return The DTW distance between the two time series
  */
-double DTW (const vector<double> &s, const vector<double> &t, int w);
+template <typename T>
+double DTW (const vector<T> &s, const vector<T> &t, int w);
 
 /**
  *  Calculate dynamic time warping distance on two time series
@@ -51,6 +52,11 @@ double DTW (const vector<double> &s, const vector<double> &t, int w);
  *
  *  @return The DTW distance between the two time series
  */
-double DTW (const vector<double> &s, const vector<double> &t);
+template <typename T>
+double DTW (const vector<T> &s, const vector<T> &t);
+
+template <typename T>
+double weightedPNorm (const vector<T> &dists, const vector<T> &weights, int p = 2);
 }
+
 #endif /* DTW_h */

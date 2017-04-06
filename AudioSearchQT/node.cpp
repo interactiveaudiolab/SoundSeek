@@ -75,6 +75,7 @@ Node::Node(GraphWidget *graphWidget)
     color.setHsvF(rand()%100/100.f, .1, 1);
     radius = 20;
     rating = 0;
+
 }
 
 void Node::addEdge(Edge *edge)
@@ -165,22 +166,19 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
         painter->setBrush(QBrush(Qt::white));
     else
         painter->setBrush(QBrush(color));
-    painter->drawEllipse(-1 * radius / 2, -1 * radius / 2, radius, radius);
 
-//    QRadialGradient gradient(-3, -3, 10);
-//    if (option->state & QStyle::State_Sunken) {
-//        gradient.setCenter(3, 3);
-//        gradient.setFocalPoint(3, 3);
-//        gradient.setColorAt(1, QColor(Qt::yellow).light(120));
-//        gradient.setColorAt(0, QColor(Qt::darkYellow).light(120));
-//    } else {
-//        gradient.setColorAt(0, Qt::yellow);
-//        gradient.setColorAt(1, Qt::darkYellow);
-//    }
-//    painter->setBrush(gradient);
+    if (rating > 0) {
+        painter->drawPolygon(StarPolygon(radius));
+        painter->setPen(QPen(Qt::black, 0));
+        painter->drawPolygon(StarPolygon(radius));
 
-    painter->setPen(QPen(Qt::black, 0));
-    painter->drawEllipse(-1 * radius / 2, -1 * radius / 2, radius, radius);
+    }
+    else {
+        painter->drawEllipse(-1 * radius / 2, -1 * radius / 2, radius, radius);
+
+        painter->setPen(QPen(Qt::black, 0));
+        painter->drawEllipse(-1 * radius / 2, -1 * radius / 2, radius, radius);
+    }
 }
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -238,6 +236,9 @@ void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     //auto *collapseAction = menu.addAction("Hide children");
 
     auto *openInFinderAction = menu.addAction("Reveal in Finder");
+
+    auto *openInEditorAction = menu.addAction("Open File");
+
     auto *selectedAction = menu.exec(event->screenPos());
 
     if (selectedAction == likeAction)
@@ -258,6 +259,12 @@ void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     else if (selectedAction == openInFinderAction)
     {
         revealFile(nullptr, QUrl::fromPercentEncoding(audioFile.toLocalFile().toLocal8Bit()));
+    }
+    else if (selectedAction == openInEditorAction)
+    {
+        QDesktopServices::openUrl(audioFile);
+//      auto app = QFileDialog::getOpenFileName(nullptr, "Choose an Audio Editor Application", "/Applications/", "Applications (*.app)");
+//        QProcess::startDetached(app, QStringList( QUrl::fromPercentEncoding(audioFile.toLocalFile().toLocal8Bit())));
     }
 //    else if (selectedAction == collapseAction)
 //    {

@@ -38,7 +38,8 @@ vector<double> Distance::distance (const AudioObject &a, const AudioObject &b, d
     return distances;
 }
 
-double Distance::DTW (const vector<double> &s, const vector<double> &t, int w)
+template <typename T>
+double Distance::DTW (const vector<T> &s, const vector<T> &t, int w)
 {
     double cost;
     double dbl_max = numeric_limits<double>::max ();
@@ -65,7 +66,8 @@ double Distance::DTW (const vector<double> &s, const vector<double> &t, int w)
     return abs (dtw (n, m));
 }
 
-double Distance::DTW (const vector<double> &s, const vector<double> &t)
+template <typename T>
+double Distance::DTW (const vector<T> &s, const vector<T> &t)
 {
     double cost;
     double dbl_max = numeric_limits<double>::max ();
@@ -87,4 +89,18 @@ double Distance::DTW (const vector<double> &s, const vector<double> &t)
         }
     }
     return abs (dtw (n, m));
+}
+
+template <typename T>
+double Distance::weightedPNorm (const vector<T> &dists, const vector<T> &weights, int p)
+{
+    assert (weights.size () == dists.size ());
+
+    double sum = 0;
+    for (int i = 0; i < dists.size (); ++i)
+    {
+        sum += weights[i] * pow (dists[i], p);
+    }
+
+    return pow (sum, 1 / (double) p);
 }

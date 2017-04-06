@@ -65,8 +65,10 @@
 #include <QMenu>
 #include <QDesktopServices>
 #include <QFileDialog>
+#include <QPolygonF>
 
 #include "audiorecorder.h"
+#include "starpolygon.h"
 
 class AudioRecorder;
 class Edge;
@@ -121,7 +123,6 @@ private:
     QUrl audioFile;
     int radius;
     int rating;
-
 };
 //! [0]
 

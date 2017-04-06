@@ -247,7 +247,28 @@
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="graphLayout"/>
+     <layout class="QVBoxLayout" name="rightLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QVBoxLayout" name="waveformLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="graphLayout">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>

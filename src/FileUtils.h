@@ -8,6 +8,8 @@
 #ifndef FileUtils_h
 #define FileUtils_h
 
+#include <boost/filesystem.hpp>
+
 #define AFILE_EXT ".afr"
 
 using namespace std;

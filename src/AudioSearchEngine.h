@@ -8,7 +8,6 @@
 #ifndef AudioSearchEngine_hpp
 #define AudioSearchEngine_hpp
 
-#include <cassert>
 #include <sstream>
 #include <thread>
 #include <boost/progress.hpp>
@@ -120,14 +119,26 @@ public:
     /* For debugging */
     void printFeatureInfo () const;
 
+    vector<double> calc_distance (path p1, path p2) const;
+
+    void calc_all_distances ();
+
 private:
     FeatureExtractor extractor;
     Dtw dtw;
     MatrixXd distances;
+
+    /* for precalculating distances */
+    MatrixXd distance_cache;
+    map<path, int> lookup_table;
+    /**/
+
     vector<path> analysis_files;
     vector<pair<path, bool>> search_dirs;  // The paths to the directories to be searched, and bools where True =
     // directory should be searched recursively
+    path last_query;
     unsigned int num_processors;
+    bool distances_calculated;
 
     void normalize (MatrixXd *distances_by_feature, bool use_std_dev = false);
 

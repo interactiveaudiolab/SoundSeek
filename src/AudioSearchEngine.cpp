@@ -20,6 +20,7 @@ AudioSearchEngine::~AudioSearchEngine ()
 
 void AudioSearchEngine::search (path query_path, double dtw_constraint)
 {
+    assert (search_dirs.size () > 0);
     assert (dtw_constraint <= 1 && dtw_constraint > 0);
     DBG ("Query: " << query_path.string () << endl);
     AudioObject query;
@@ -43,11 +44,7 @@ void AudioSearchEngine::search (path query_path, double dtw_constraint)
         return;
     }
 
-    // store paths to every analysis file in a vector
-    for (auto dir : search_dirs)
-    {
-        FileUtils::getAllAnalysisFiles (dir.first, analysis_files, dir.second);
-    }
+    assert (analysis_files.size () > 0);
 
     double best_dist = std::numeric_limits<double>::max ();  // current lowest distance
 
@@ -62,6 +59,10 @@ void AudioSearchEngine::search (path query_path, double dtw_constraint)
     for (int i = 0; i < analysis_files.size (); ++i)
     {
         auto afile = analysis_files[i];
+
+        // don't include query in search results
+        if (query_path == FileUtils::getAudioFromAnalysisFile (afile)) continue;
+
         // DBG (afile.filename ().string ());
         AudioObject candidate = FileUtils::loadAnalysisFile (afile);
 
@@ -148,21 +149,17 @@ void AudioSearchEngine::addSearchDir (path dir, bool include_subdirs)
     for (vector<pair<path, bool>>::iterator it = search_dirs.begin (); it != search_dirs.end ();)
     {
         // check if there is already a search directory that contains the new directory
-        if (it->second && dir.string ().find (it->first.string ()) != string::npos)
-        {
-            return;
-        }
+        if (it->second && dir.string ().find (it->first.string ()) != string::npos) return;
 
         // if the new directory contains a directory that has already been added, remove the redundant directory
         if (include_subdirs && it->first.string ().find (dir.string ()) != string::npos)
-        {
             it = search_dirs.erase (it);
-        }
         else
             ++it;
     }
 
     createAnalysisFiles (dir, include_subdirs);
+    FileUtils::getAllAnalysisFiles (dir, analysis_files, include_subdirs);
     search_dirs.push_back (make_pair (dir, include_subdirs));
 }
 
@@ -193,9 +190,6 @@ void AudioSearchEngine::createAnalysisFiles (path p, bool recursive) const
     }
 }
 
-/**
- *  Deletes all existing analysis files in search_dirs
- */
 void AudioSearchEngine::removeAllAnalysisFiles () const
 {
     for (auto d : search_dirs) FileUtils::removeAnalysisFiles (d.first);
@@ -214,6 +208,25 @@ void AudioSearchEngine::printFeatureInfo () const
              << "\nMax: " << distances.row (i).maxCoeff () << endl
              << endl;
     }
+}
+
+void AudioSearchEngine::calc_all_distances ()
+{
+    // for
+    distances_calculated = true;
+    for (int i = 0; i < analysis_files.size()
+}
+
+vector<double> AudioSearchEngine::calc_distance (path p1, path p2) const
+{
+    if (distances_calculated)
+    {
+    }
+    else
+    {
+        return Distance::distance (AudioObject (p1), AudioObject (p2), .1, num_processors);
+    }
+    return vector<double> ();
 }
 
 /* PRIVATE */

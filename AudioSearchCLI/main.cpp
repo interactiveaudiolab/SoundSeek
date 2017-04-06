@@ -12,6 +12,7 @@
 #include "../src/libs/json.hpp"
 #include "../src/AudioSearchEngine.h"
 #include "../src/FileUtils.h"
+#include "../src/AudioSearchEngine2.h"
 
 typedef std::chrono::high_resolution_clock Clock;
 

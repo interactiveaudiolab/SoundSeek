@@ -356,5 +356,6 @@ void AudioRecorder::keyPressEvent(QKeyEvent *event)
         toggleAudio();
         break;
     default:
+        break;
     }
 }

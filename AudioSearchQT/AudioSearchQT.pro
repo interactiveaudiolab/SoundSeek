@@ -20,7 +20,8 @@ HEADERS = \
     edge.h \
     graphwidget.h \
     node.h \
-    ../src/libs/ThreadPool.h
+    ../src/libs/ThreadPool.h \
+    starpolygon.h
 
 SOURCES = \
     main.cpp \
