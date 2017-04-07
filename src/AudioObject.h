@@ -12,6 +12,8 @@
 #include <aquila.h>
 #include "Common.h"
 #include "AudioFeatures.h"
+#include "FileUtils.h"
+#include "FeatureExtractor.h"
 
 #define NUM_FEATURES 19
 
@@ -32,7 +34,17 @@ public:
 
     AudioObject (boost::filesystem::path p)
     {
-        ifstream afile_stream (p.string (), std::ifstream::in);
+        if (FileUtils::existsAsAudioFile (p) && !FileUtils::analysisFileExists (p))
+        {
+            DBG ("Analysis file exists: " << FileUtils::analysisFileExists (p));
+
+            FeatureExtractor extractor;
+            extractor.extract (p);
+        }
+        p = FileUtils::getAnalysisFilePath (p);
+        if (!FileUtils::isAnalysisFile (p)) throw std::runtime_error (p.string () + "not a valid audio file.");
+
+        std::ifstream afile_stream (p.string (), std::ifstream::in);
 
         if (afile_stream.is_open ()) afile_stream >> features;
     }

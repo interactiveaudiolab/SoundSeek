@@ -63,7 +63,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "/Users/michael/InteractiveAudioLab/audiosearch/audio"
+            argument = "/Users/michael/InteractiveAudioLab/audiosearch/audio_small"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

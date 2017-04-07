@@ -2,177 +2,273 @@
 //  AudioSearchEngine.hpp
 //  AudioSearchCLI
 //
-//  Created by Michael Donovan on 12/21/16.
+//  Created by Michael on 4/6/17.
+//  Copyright © 2017 Michael Donovan. All rights reserved.
 //
 
 #ifndef AudioSearchEngine_hpp
 #define AudioSearchEngine_hpp
 
-#include <sstream>
-#include <thread>
-#include <boost/progress.hpp>
-#include <boost/timer.hpp>
-#include <limits>
-#include <aquila.h>
-#include "FeatureExtractor.h"
-#include "FileUtils.h"
-#include "AudioFeatures.h"
 #include "Common.h"
+#include "FileUtils.h"
 #include "Distance.h"
+#include <boost/multi_array.hpp>
+#include <boost/progress.hpp>
+
+#include <limits>
+
+#define DEFAULT_DTW_CONSTRAINT .1
 
 using namespace std;
-// using namespace fastdtw;
-using namespace Aquila;
-using namespace Eigen;
+using namespace boost;
+using namespace boost::filesystem;
 
-struct searchResult
-{
-    path p;
-    double score;
-
-    /**
-     *  Creates a string representation of a searchResult
-     *
-     *  @return a string representation of a searchResult
-     */
-    string toString ()
-    {
-        stringstream ss;
-        ss << scientific << setprecision (3) << score << "\t" << p.filename ().string ();
-        return ss.str ();
-    }
-};
+typedef multi_array<vector<double>, 2> dist_matrix;
 
 class AudioSearchEngine
 {
 public:
-    AudioSearchEngine ();
+    AudioSearchEngine ()
+    {
+        featureWeights.resize (AudioFeatures::num_features, 1);
+    }
 
-    ~AudioSearchEngine ();
-
-    /**
-     *  Finds the audio file in search_dirs most similar to a given audio file
-     *
-     *  @param query_path The path to a query audio file
-     *  @param dtw_constraint A locality constraint for DTW as a fraction of the size of the time series being compared
-     */
-    void search (path query_path, double dtw_constraint = 1);
+    ~AudioSearchEngine ()
+    {
+    }
 
     /**
-     *  Return the nearest neighbor by feature
-     *  Must call search() fist
+     *  Return true if a sound file is already in the database
      *
-     *  @return vector<searchResult>
+     *  @param file Path to an audio file
+     *
+     *  @return True if a sound file is already in the database
      */
-    vector<searchResult> getNearestResultByFeature () const;
+    bool hasSound (path file)
+    {
+        return find (sounds.begin (), sounds.end (), file) != sounds.end ();
+    }
 
     /**
-     *  Return all search results sorted by distance
-     *  Must call search() fist
+     *  Add a sound file to the database
      *
-     *  @param p P for LP norm
-     *
-     *  @return vector<searchResult> of sorted results.
+     *  @param file          Path to an audio file
      */
-    vector<searchResult> getTopResults (int num_results = 10, int p = 2, bool remove_zeros = true) const;
+    void addFile (path file, bool resize_matrix = true)
+    {
+        if (!FileUtils::existsAsAudioFile (file))
+            throw std::runtime_error (file.string () + " is not a valid audio file.");
+
+        // if audio file exists, is an audio file, and is not already in database
+        if (!hasSound (file))
+        {
+            sounds.push_back (file);
+        }
+
+        if (resize_matrix) resize ();
+    }
 
     /**
-     *  Returns all search result sorted by weighted distance
-     *  Must call search() fist
+     *  Add a directory of sounds to the database
      *
-     *  @param weights vector of weights for each feature
-     *  @param p       P for LP norm
-     *
-     *  @return vector<searchResult> of sorted results.
+     *  @param dir             Path to a directory of audio files
+     *  @param include_subdirs If true, sounds in subdirectories will be added as well
      */
-    vector<searchResult> getTopResultsWeighted (const vector<double> &weights, int p = 2,
-                                                bool remove_zeros = true) const;
+    void addDirectory (path dir, bool include_subdirs)
+    {
+        if (!is_directory (dir)) addFile (dir);
+
+        if (include_subdirs)
+        {
+            for (recursive_directory_iterator it (dir); it != recursive_directory_iterator (); ++it)
+            {
+                if (FileUtils::existsAsAudioFile (it->path ())) addFile (it->path (), false);
+            }
+        }
+        else
+        {
+            for (directory_iterator it (dir); it != directory_iterator (); ++it)
+            {
+                if (FileUtils::existsAsAudioFile (it->path ())) addFile (it->path (), false);
+            }
+        }
+
+        resize ();  // resize once at end rather than once for every file added
+    }
 
     /**
-     *  Add a directory to be searched
-     *
-     *  @param dir             The directory to be searched
-     *  @param include_subdirs If true, also search subdirectories
+     *  Calculate distances between every pair of sounds in the databse
      */
-    void addSearchDir (path dir, bool include_subdirs);
+    void calcAllDistances ()
+    {
+        DBG ("Calculating all distances.");
+
+#ifdef DEBUG
+        progress_display show_progress (sounds.size ());
+#endif
+
+        for (int i = 0; i < sounds.size (); ++i)
+        {
+            for (int j = i; j < sounds.size (); ++j)
+            {
+                if (j == i)
+                    distances[i][j] = vector<double> (AudioFeatures::num_features, 0.);
+                else
+                    getFeatureDistances (sounds[i], sounds[j]);
+            }
+#ifdef DEBUG
+            ++show_progress;
+#endif
+        }
+    }
 
     /**
-     *  Creates analysis files for an audio file or directory of audio files
+     *  Get vector of distances by feature between two sounds
      *
-     *  @param p            A path to an audio file or directory of audio files
-     *  @param recursive    If true and p is a directory, create analysis files for files in subdirectories
+     *  @param a Path to an audio file
+     *  @param b Path to an audio file
+     *
+     *  @return vector<double> containing distances along each feature
      */
-    void createAnalysisFiles (path p, bool recursive = true) const;
+    vector<double> getFeatureDistances (path a, path b)
+    {
+        auto a_id = pathToID (a);
+        auto b_id = pathToID (b);
+        if (distCalculated (a, b)) return distances[a_id][b_id];
+
+        auto dists = Distance::distance (AudioObject (sounds[a_id]), AudioObject (sounds[b_id]), DEFAULT_DTW_CONSTRAINT,
+                                         thread::hardware_concurrency ());
+        distances[a_id][b_id] = dists;
+        distances[b_id][a_id] = dists;
+
+        return dists;
+    }
 
     /**
-     *  Deletes all existing analysis files in search_dirs
-     */
-    void removeAllAnalysisFiles () const;
-
-    /**
-     *  Get the number of audio files in the set being searched
+     *  Get the weighted distance between two sounds
      *
-     *  @return The number of audio files in the set being searchd
+     *  @param a Path to an audio file
+     *  @param b Path to an audio file
+     *
+     *  @return The weighted distance between two sounds
      */
-    size_t getNumSearchFiles () const;
+    double getWeightedDistance (path a, path b)
+    {
+        DBG ("getWeightedDistance");
+        auto dists = getFeatureDistances (a, b);
+        return Distance::weightedPNorm (dists, featureWeights);
+        // return Distance::weightedPNorm<double> (dists, featureWeights);
+    }
 
-    /* For debugging */
-    void printFeatureInfo () const;
+    vector<path> getNearestByFeature (path query)
+    {
+        DBG ("getNearestByFeature");
+        addFile (query);
 
-    vector<double> calc_distance (path p1, path p2) const;
+        auto query_id = pathToID (query);
 
-    void calc_all_distances ();
+        vector<path> result (AudioFeatures::num_features);
+
+        for (int i = 0; i < AudioFeatures::num_features; ++i)
+        {
+            double min_dist = numeric_limits<double>::max ();
+            size_t min_id = query_id;
+
+            for (int j = 0; j < distances.shape ()[1]; ++j)
+            {
+                auto dist = distances[query_id][j][i];
+                if (j != query_id && dist > 0 && dist < min_dist)
+                {
+                    min_dist = dist;
+                    min_id = j;
+                }
+            }
+            result[i] = IDToPath (min_id);
+        }
+
+        return result;
+    }
+
+    vector<path> getNearestWeighted (path query, int num_results = 5)
+    {
+        addFile (query);
+
+        print_dists ();
+        auto query_id = pathToID (query);
+
+        vector<double> dists (distances.shape ()[1]);
+        for (int i = 0; i < sounds.size (); ++i)
+        {
+            if (sounds[i] == query)
+                dists[i] = numeric_limits<double>::max ();
+            else
+                dists[i] = getWeightedDistance (query, sounds[i]);
+        }
+
+        // argsort
+        vector<int> indices (distances.shape ()[1]);
+        iota (indices.begin (), indices.end (), 0);
+
+        sort (indices.begin (), indices.end (), [&](int a, int b) { return dists[a] < dists[b]; });
+
+        indices.pop_back ();
+
+        vector<path> results (num_results);
+
+        for (int i = 0; i < num_results; ++i) results[i] = sounds[indices[i]];
+
+        return results;
+    }
 
 private:
-    FeatureExtractor extractor;
-    Dtw dtw;
-    MatrixXd distances;
+    deque<path> sounds;
+    dist_matrix distances;
+    vector<double> featureWeights;
 
-    /* for precalculating distances */
-    MatrixXd distance_cache;
-    map<path, int> lookup_table;
-    /**/
+    void resize ()
+    {
+        assert (distances.shape ()[0] == distances.shape ()[1]);
+        if (distances.shape ()[0] != sounds.size ())
+        {
+            distances.resize (extents[sounds.size ()][sounds.size ()]);
+        }
+    }
 
-    vector<path> analysis_files;
-    vector<pair<path, bool>> search_dirs;  // The paths to the directories to be searched, and bools where True =
-    // directory should be searched recursively
-    path last_query;
-    unsigned int num_processors;
-    bool distances_calculated;
+    bool distCalculated (path a, path b)
+    {
+        auto a_id = pathToID (a);
+        auto b_id = pathToID (b);
 
-    void normalize (MatrixXd *distances_by_feature, bool use_std_dev = false);
+        if (distances[a_id][b_id].size () == 0) return false;
+        return true;
+    }
 
-    /**
-     *  Replace occurences of infinity with double max, replace nans with 0
-     *
-     *  @param m MatrixXd
-     */
-    void removeNanInf (MatrixXd *m);
+    size_t pathToID (path p)
+    {
+        auto it = find (sounds.begin (), sounds.end (), p);
+        assert (it != sounds.end ());
+        return distance (sounds.begin (), it);
+    }
 
-    /**
-     *  Comparison function for sorting a vector<searchResult>
-     */
-    static bool compare (searchResult a, searchResult b);
+    path IDToPath (size_t ID)
+    {
+        return sounds[ID];
+    }
 
-    /**
-     *  Extracts paths from a vector<pair<path, double>>
-     */
-    vector<path> pathsFromPairs (const vector<pair<path, double>> &pairs);
+    void print_dists ()
+    {
+        DBG ("distances.shape: " << distances.shape ()[0] << ", " << distances.shape ()[1]);
 
-    /**
-     *  Compute weighted LP norm for multiple instances with precomputed distances along individual axes
-     *
-     *  @param m       2d matrix, rows = feature dimensions, cols = instances (audio files). [row,col] = DTW distance
-     *  between instance and query for one feature
-     *  @param weights vector of weights for each feature
-     *  @param paths   vector of paths to audio files corresponding to instances
-     *  @param p
-     *
-     *  @return A vector of structs containing the paths to the audio files and their respective distances
-     */
-    template <typename T>
-    static vector<searchResult> weightedLPNorm (const MatrixXd &m, const vector<T> &weights, const vector<path> &paths,
-                                                int p = 2);
+        for (int i = 0; i < distances.shape ()[0]; ++i)
+        {
+            for (int j = 0; j < distances.shape ()[1]; ++j)
+            {
+                DBG ("i: " << i << " j: " << j);
+                cerr << (distances[i][j].size () > 0);
+            }
+            cerr << endl << endl;
+        }
+    }
 };
 
 #endif /* AudioSearchEngine_hpp */

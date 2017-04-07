@@ -54,7 +54,8 @@
 
 #include "ui_audiorecorder.h"
 
-
+using namespace boost;
+using namespace boost::filesystem;
 
 AudioRecorder::AudioRecorder(QWidget *parent) :
     QMainWindow(parent),
@@ -77,6 +78,7 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
         ui->audioDeviceBox->addItem(device, QVariant(device));
     }
 
+    queryPath = boost::filesystem::path(RECORD_PATH);
 
     ui->searchButton->setEnabled(false);
     ui->playQueryButton->setEnabled(false);
@@ -208,7 +210,6 @@ void AudioRecorder::search()
         return;
     ui->statusbar->showMessage("Searching");
 
-    searchEngine.search(RECORD_PATH);
 
     topResults = true;
     updateResults();
@@ -216,10 +217,10 @@ void AudioRecorder::search()
     ui->resultViewButton->setEnabled(true);
     //ui->statusbar->showMessage("Search %d files", searchEngine.getNumSearchFiles());
 
-    foreach(searchResult r, searchEngine.getNearestResultByFeature())
+    foreach(path p, searchEngine.getNearestByFeature(queryPath))
     {
-        auto* parent = graph.findNode(QUrl::fromLocalFile(RECORD_PATH));
-        graph.addNode (parent, pathToUrl(r.p));
+        auto* parent = graph.findNode(QUrl::fromLocalFile(QString::fromStdString(queryPath.string())));
+        graph.addNode (parent, pathToUrl(p));
     }
 }
 
@@ -228,13 +229,12 @@ void AudioRecorder::searchByPath(QUrl searchPath)
 {
     ui->statusbar->showMessage("Searching");
 
-    searchEngine.search(QUrlToString(searchPath));
 
-    foreach(searchResult r, searchEngine.getNearestResultByFeature())
+    foreach(path p, searchEngine.getNearestByFeature(path(QUrlToString(searchPath))))
     {
-        cout << r.p << endl;
+        cout << p << endl;
         auto* parent = graph.findNode(searchPath);
-        graph.addNode (parent, pathToUrl(r.p));
+        graph.addNode (parent, pathToUrl(p));
     }
 }
 
@@ -247,7 +247,7 @@ std::string AudioRecorder::QUrlToString(QUrl path)
 void AudioRecorder::setSearchDirectory()
 {
     QUrl dirName = QFileDialog::getExistingDirectoryUrl(0, "Open a Folder of Audio", QUrl::fromLocalFile("/Users/michael/InteractiveAudioLab/audiosearch/Audio/"), QFileDialog::ShowDirsOnly);
-    searchEngine.addSearchDir(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()).toStdString(), true);
+    searchEngine.addDirectory(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()).toStdString(), true);
     ui->searchDirLabel->setText(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()));
 }
 
@@ -278,21 +278,21 @@ void AudioRecorder::toggleResultView()
 
 void AudioRecorder::updateResults()
 {
-    ui->topResults->clear();
-    if (topResults)
-    {
-        foreach(searchResult r, searchEngine.getTopResults(20))
-        {
-            ui->topResults->addItem(QString::fromUtf8(r.p.c_str()));
-        }
-    }
-    else
-    {
-        foreach(searchResult r, searchEngine.getNearestResultByFeature())
-        {
-            ui->topResults->addItem(QString::fromUtf8(r.p.c_str()));
-        }
-    }
+//    ui->topResults->clear();
+//    if (topResults)
+//    {
+//        foreach(searchResult r, searchEngine.getTopResults(20))
+//        {
+//            ui->topResults->addItem(QString::fromUtf8(r.p.c_str()));
+//        }
+//    }
+//    else
+//    {
+//        foreach(searchResult r, searchEngine.getNearestResultByFeature())
+//        {
+//            ui->topResults->addItem(QString::fromUtf8(r.p.c_str()));
+//        }
+//    }
 }
 
 void AudioRecorder::setOutputLocation(QUrl path)

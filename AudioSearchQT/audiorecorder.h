@@ -72,6 +72,7 @@ class QAudioBuffer;
 class QErrorMessage;
 QT_END_NAMESPACE
 
+using namespace boost;
 
 class AudioRecorder : public QMainWindow
 {
@@ -120,6 +121,7 @@ private:
 
     GraphWidget graph;
 
+    boost::filesystem::path queryPath;
     AudioSearchEngine searchEngine;
     bool outputLocationSet;
     bool queryRecorded;

@@ -27,7 +27,8 @@ public:
         return features;
     }
 
-    static enum featureIndices {
+    enum featureIndices
+    {
         pitch = 0,
         pitch_confidence,
         spectral_centroid,

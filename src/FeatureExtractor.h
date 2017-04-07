@@ -9,13 +9,10 @@
 #define FeatureExtractor_hpp
 
 #include <essentia/algorithmfactory.h>
-#include "AudioObject.h"
 #include "AudioFeatures.h"
 
-#include "FileUtils.h"
-
-#define DEFAULT_FRAMESIZE 1024
-#define DEFAULT_HOPSIZE 512
+#define DEFAULT_FRAMESIZE 4096
+#define DEFAULT_HOPSIZE 4096
 #define DEFAULT_SAMPLERATE 11025
 
 using namespace std;

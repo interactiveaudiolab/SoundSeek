@@ -38,8 +38,7 @@ vector<double> Distance::distance (const AudioObject &a, const AudioObject &b, d
     return distances;
 }
 
-template <typename T>
-double Distance::DTW (const vector<T> &s, const vector<T> &t, int w)
+double Distance::DTW (const vector<double> &s, const vector<double> &t, int w)
 {
     double cost;
     double dbl_max = numeric_limits<double>::max ();
@@ -66,8 +65,7 @@ double Distance::DTW (const vector<T> &s, const vector<T> &t, int w)
     return abs (dtw (n, m));
 }
 
-template <typename T>
-double Distance::DTW (const vector<T> &s, const vector<T> &t)
+double Distance::DTW (const vector<double> &s, const vector<double> &t)
 {
     double cost;
     double dbl_max = numeric_limits<double>::max ();
@@ -91,9 +89,10 @@ double Distance::DTW (const vector<T> &s, const vector<T> &t)
     return abs (dtw (n, m));
 }
 
-template <typename T>
-double Distance::weightedPNorm (const vector<T> &dists, const vector<T> &weights, int p)
+double Distance::weightedPNorm (const vector<double> &dists, const vector<double> &weights, int p)
 {
+    DBG ("weights.size: " << weights.size () << " dists.size: " << dists.size ()
+                          << " num_features: " << AudioFeatures::num_features);
     assert (weights.size () == dists.size ());
 
     double sum = 0;

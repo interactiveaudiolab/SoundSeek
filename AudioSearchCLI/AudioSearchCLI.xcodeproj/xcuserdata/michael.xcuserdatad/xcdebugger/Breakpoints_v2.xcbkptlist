@@ -25,13 +25,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../src/Distance.cpp"
-            timestampString = "512331578.34446"
+            filePath = "../src/AudioSearchEngine2.h"
+            timestampString = "513230616.876775"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "Distance::DTW (const vector&lt;double&gt; &amp;s, const vector&lt;double&gt; &amp;t, int w)"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
+            landmarkName = "getNearestByFeature (path query)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../src/Distance.cpp"
+            timestampString = "513232631.32347"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "Distance::distance (const AudioObject &amp;a, const AudioObject &amp;b, double dtw_constraint, int num_processors)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

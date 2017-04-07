@@ -6,8 +6,12 @@
 //
 
 #include "FeatureExtractor.h"
+#include "FileUtils.h"
 
-FeatureExtractor::FeatureExtractor (){};
+FeatureExtractor::FeatureExtractor ()
+{
+    init ();
+};
 
 FeatureExtractor::~FeatureExtractor (){};
 
