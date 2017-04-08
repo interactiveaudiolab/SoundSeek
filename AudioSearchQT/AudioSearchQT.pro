@@ -32,7 +32,9 @@ SOURCES = \
     graphwidget.cpp \
     edge.cpp \
     ../src/Distance.cpp \
-    common-utils.cpp
+    common-utils.cpp \
+    ../src/FileUtils.cpp \
+    ../src/tests.cpp
 
 FORMS += audiorecorder.ui
 
@@ -82,6 +84,19 @@ else:unix: LIBS += -L$$PWD/../../../../../usr/local/Cellar/essentia/2.1_beta3/li
 
 INCLUDEPATH += $$PWD/../../../../../usr/local/Cellar/essentia/2.1_beta3/include
 DEPENDPATH += $$PWD/../../../../../usr/local/Cellar/essentia/2.1_beta3/include
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/release/ -lboost_filesystem
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/debug/ -lboost_filesystem
+else:unix: LIBS += -L$$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/ -lboost_filesystem
+
+INCLUDEPATH += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/include
+DEPENDPATH += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/release/libboost_filesystem.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/debug/libboost_filesystem.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/release/boost_filesystem.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/debug/boost_filesystem.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/libboost_filesystem.a
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/release/ -lboost_filesystem
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/debug/ -lboost_filesystem

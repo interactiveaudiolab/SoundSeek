@@ -111,6 +111,8 @@ public:
         {
             for (int j = i; j < sounds.size (); ++j)
             {
+                if (distance[i][j].size() > 0)
+                    continue;
                 if (j == i)
                     distances[i][j] = vector<double> (AudioFeatures::num_features, 0.);
                 else
@@ -176,7 +178,7 @@ public:
 
             for (int j = 0; j < distances.shape ()[1]; ++j)
             {
-                auto dist = distances[query_id][j][i];
+                auto dist = getFeatureDistances(query, IDToPath(j))[i];
                 if (j != query_id && dist > 0 && dist < min_dist)
                 {
                     min_dist = dist;

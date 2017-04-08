@@ -212,9 +212,9 @@ void AudioRecorder::search()
 
 
     topResults = true;
-    updateResults();
+    //updateResults();
 
-    ui->resultViewButton->setEnabled(true);
+    //ui->resultViewButton->setEnabled(true);
     //ui->statusbar->showMessage("Search %d files", searchEngine.getNumSearchFiles());
 
     foreach(path p, searchEngine.getNearestByFeature(queryPath))
@@ -248,6 +248,8 @@ void AudioRecorder::setSearchDirectory()
 {
     QUrl dirName = QFileDialog::getExistingDirectoryUrl(0, "Open a Folder of Audio", QUrl::fromLocalFile("/Users/michael/InteractiveAudioLab/audiosearch/Audio/"), QFileDialog::ShowDirsOnly);
     searchEngine.addDirectory(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()).toStdString(), true);
+    sleep(100);
+    searchEngine.calcAllDistances();
     ui->searchDirLabel->setText(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()));
 }
 
