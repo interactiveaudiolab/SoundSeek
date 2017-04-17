@@ -59,11 +59,13 @@
 #include "node.h"
 #include "graphwidget.h"
 #include "common-utils.cpp"
+#include "utils.h"
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOption>
+#include <QFont>
 
 Node::Node(GraphWidget *graphWidget)
     : graph(graphWidget), expanded(false)
@@ -162,22 +164,27 @@ QPainterPath Node::shape() const
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
     painter->setPen(Qt::NoPen);
-    if (rating == -1)
+    if (rating == -1) {
         painter->setBrush(QBrush(Qt::white));
-    else
-        painter->setBrush(QBrush(color));
+        painter->drawEllipse(-1 * radius / 2, -1 * radius / 2, radius, radius);
 
-    if (rating > 0) {
-        painter->drawPolygon(StarPolygon(radius));
-        painter->setPen(QPen(Qt::black, 0));
-        painter->drawPolygon(StarPolygon(radius));
-
+        painter->setPen(QPen(Qt::lightGray, 0));
+        painter->drawEllipse(-1 * radius / 2, -1 * radius / 2, radius, radius);
     }
     else {
+        painter->setBrush(QBrush(color));
+
         painter->drawEllipse(-1 * radius / 2, -1 * radius / 2, radius, radius);
 
         painter->setPen(QPen(Qt::black, 0));
         painter->drawEllipse(-1 * radius / 2, -1 * radius / 2, radius, radius);
+    }
+    if (rating > 0) {
+        QPointF centerPoint = boundingRect().center();
+        centerPoint.setX(centerPoint.x() - 5    );
+        centerPoint.setY(centerPoint.y() + 4);
+        painter->setPen(QPen(Qt::black, 0));
+        painter->drawText(centerPoint,"★");
     }
 }
 
@@ -230,6 +237,7 @@ void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     auto *dislikeAction = menu.addAction("Dislike");
 
     QAction *expandAction = nullptr;
+
     if (!expanded)
         expandAction = menu.addAction("Show more like this");
 
@@ -245,6 +253,7 @@ void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
     {
         radius += 5;
         rating++;
+        graph->getAudioParent()->searchEngine.addLikedSound(QUrlToPath(audioFile), QUrlToPath(parent->getAudio()));
         update();
     }
     else if (selectedAction == dislikeAction)
@@ -279,7 +288,7 @@ void Node::expand()
         return;
 
     expanded = true;
-    rating++;
+    //rating++;
     radius += 5; // increase size
     color.setHsvF(color.hslHueF(), 1, 1); // increase saturation of color
 

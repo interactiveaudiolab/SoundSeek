@@ -107,8 +107,7 @@ protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 
 private:
-    QUrl pathToUrl(path p);
-    std::string QUrlToString(QUrl path);
+    friend class Node;
     void updateResults();
 
     Ui::AudioRecorder *ui;

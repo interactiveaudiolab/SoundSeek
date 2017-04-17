@@ -51,6 +51,7 @@
 #include <QMediaRecorder>
 
 #include "audiorecorder.h"
+#include "utils.h"
 
 #include "ui_audiorecorder.h"
 
@@ -84,6 +85,8 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
     ui->playQueryButton->setEnabled(false);
     ui->resultViewButton->setEnabled(false);
     ui->graphLayout->addWidget(&graph);
+    ui->topResults->setEnabled(false);
+    ui->ResultsLabel->setEnabled(false);
 
     connect(audioRecorder, SIGNAL(durationChanged(qint64)), this,
             SLOT(updateProgress(qint64)));
@@ -224,11 +227,9 @@ void AudioRecorder::search()
     }
 }
 
-
 void AudioRecorder::searchByPath(QUrl searchPath)
 {
     ui->statusbar->showMessage("Searching");
-
 
     foreach(path p, searchEngine.getNearestByFeature(path(QUrlToString(searchPath))))
     {
@@ -238,17 +239,14 @@ void AudioRecorder::searchByPath(QUrl searchPath)
     }
 }
 
-std::string AudioRecorder::QUrlToString(QUrl path)
-{
-    return QUrl::fromPercentEncoding(path.toLocalFile().toLocal8Bit()).toStdString();
-}
 
 
 void AudioRecorder::setSearchDirectory()
 {
     QUrl dirName = QFileDialog::getExistingDirectoryUrl(0, "Open a Folder of Audio", QUrl::fromLocalFile("/Users/michael/InteractiveAudioLab/audiosearch/Audio/"), QFileDialog::ShowDirsOnly);
     searchEngine.addDirectory(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()).toStdString(), true);
-    sleep(100);
+    //sleep(.01);
+
     searchEngine.calcAllDistances();
     ui->searchDirLabel->setText(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()));
 }
@@ -343,11 +341,6 @@ void AudioRecorder::toggleAudio()
         mediaPlayer.stop();
     else
         mediaPlayer.play();
-}
-
-QUrl AudioRecorder::pathToUrl(path p)
-{
-    return QUrl::fromLocalFile(QString::fromUtf8(p.c_str()));
 }
 
 void AudioRecorder::keyPressEvent(QKeyEvent *event)

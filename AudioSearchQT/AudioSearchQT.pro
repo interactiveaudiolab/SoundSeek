@@ -3,6 +3,8 @@ TARGET = AudioSearchQT
 
 QT += multimedia
 
+CONFIG += warn_off
+
 win32:INCLUDEPATH += $$PWD
 
 HEADERS = \
@@ -21,7 +23,9 @@ HEADERS = \
     graphwidget.h \
     node.h \
     ../src/libs/ThreadPool.h \
-    starpolygon.h
+    starpolygon.h \
+    utils.h \
+    ../src/libs/MULTI_ARRAY_SERIALIZATION.hpp
 
 SOURCES = \
     main.cpp \
@@ -33,8 +37,7 @@ SOURCES = \
     edge.cpp \
     ../src/Distance.cpp \
     common-utils.cpp \
-    ../src/FileUtils.cpp \
-    ../src/tests.cpp
+    ../src/FileUtils.cpp
 
 FORMS += audiorecorder.ui
 
@@ -110,3 +113,16 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../..
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/release/boost_filesystem.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/debug/boost_filesystem.lib
 else:unix: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/libboost_filesystem.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/release/ -lboost_serialization
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/debug/ -lboost_serialization
+else:unix: LIBS += -L$$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/ -lboost_serialization
+
+INCLUDEPATH += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/include
+DEPENDPATH += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/release/libboost_serialization.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/debug/libboost_serialization.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/release/boost_serialization.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/debug/boost_serialization.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/libboost_serialization.a

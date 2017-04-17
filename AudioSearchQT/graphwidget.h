@@ -95,6 +95,7 @@ protected:
     void scaleView(qreal scaleFactor);
 
 private:
+    friend class Node;
     QList<Node*> nodeList;
     int timerId;
     Node *centerNode;

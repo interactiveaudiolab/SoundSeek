@@ -94,6 +94,7 @@ public:
     bool advance();
     void expand();
     void addChildNode(Node* node) { childlist.push_back(node); }
+    void setParent(Node* node) {parent = node;}
     // set the expanded member but don't change color/size or find children.
     void setExpanded(bool expanded_) { expanded = expanded_; }
     void collapse();
@@ -116,6 +117,7 @@ protected:
 private:
     QList<Edge *> edgeList;
     QList<Node *> childlist;
+    Node* parent;
     QPointF newPos;
     GraphWidget *graph;
     bool expanded;

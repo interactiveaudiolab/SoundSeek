@@ -109,6 +109,7 @@ void GraphWidget::addNode(Node *parent, QUrl audioFile)
     newNode->setPos(parent->pos().x() + rand()%20 - 10, parent->pos().y() + rand()%20 - 10);
 
     parent->addChildNode(newNode);
+    newNode->setParent(parent);
 
     QColor newColor(parent->getColor().lighter());
     if (parent->getAudio() == QUrl::fromLocalFile(RECORD_PATH))
