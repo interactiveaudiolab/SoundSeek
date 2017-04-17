@@ -111,8 +111,7 @@ public:
         {
             for (int j = i; j < sounds.size (); ++j)
             {
-                if (distance[i][j].size() > 0)
-                    continue;
+                if (distances[i][j].size () > 0) continue;
                 if (j == i)
                     distances[i][j] = vector<double> (AudioFeatures::num_features, 0.);
                 else
@@ -162,6 +161,13 @@ public:
         // return Distance::weightedPNorm<double> (dists, featureWeights);
     }
 
+    /**
+     *  Get the sounds that are nearest to a given query along each feature axis
+     *
+     *  @param query Path to an audio file
+     *
+     *  @return vector<path> of the nearest sounds along each feature axis
+     */
     vector<path> getNearestByFeature (path query)
     {
         DBG ("getNearestByFeature");
@@ -178,7 +184,7 @@ public:
 
             for (int j = 0; j < distances.shape ()[1]; ++j)
             {
-                auto dist = getFeatureDistances(query, IDToPath(j))[i];
+                auto dist = getFeatureDistances (query, IDToPath (j))[i];
                 if (j != query_id && dist > 0 && dist < min_dist)
                 {
                     min_dist = dist;
@@ -191,6 +197,15 @@ public:
         return result;
     }
 
+    /**
+     *  Get a ranked like of sounds that are nearest to a given query using weighted euclidean distance
+     *  Features are equally weighted by default, can be reweighted using addLikedSound.
+     *
+     *  @param query       Path to an audio file
+     *  @param num_results The number of results to return
+     *
+     *  @return ranked list of nearest sounds
+     */
     vector<path> getNearestWeighted (path query, int num_results = 5)
     {
         addFile (query);
@@ -222,11 +237,30 @@ public:
         return results;
     }
 
+    /**
+     *  Mark a sound as "liked" to reweight features. Takes a sound and the query sound and adds weight to the feature
+     * axis on which they are closest.
+     *
+     *  @param likedSound path to an audio file
+     *  @param query path to an audio file
+     */
+    void addLikedSound (path likedSound, path query)
+    {
+        // very naive feature reweighting. find feature axis along which the two sounds are closest and weight that
+        // feature higher
+        auto dists = distances[pathToID (query)][pathToID (likedSound)];
+        auto nearest_feature_index = min_element (dists.begin (), dists.end ()) - dists.begin ();
+        featureWeights[nearest_feature_index] *= 1.1;
+    }
+
 private:
     deque<path> sounds;
     dist_matrix distances;
     vector<double> featureWeights;
 
+    /**
+     *  Resize the distance matrix to match the number of sounds
+     */
     void resize ()
     {
         assert (distances.shape ()[0] == distances.shape ()[1]);
@@ -236,6 +270,14 @@ private:
         }
     }
 
+    /**
+     *  Return true if the SearchEngine has already calculated a distance for a pair of sounds
+     *
+     *  @param a path to an audio file
+     *  @param b path to an audio file
+     *
+     *  @return true if the SearchEngine has already calculated a distance for a pair of sounds
+     */
     bool distCalculated (path a, path b)
     {
         auto a_id = pathToID (a);
@@ -245,13 +287,27 @@ private:
         return true;
     }
 
+    /**
+     *  Get the index of a sound in the distance matrix
+     *
+     *  @param p path to an audio file
+     *
+     *  @return an index
+     */
     size_t pathToID (path p)
     {
         auto it = find (sounds.begin (), sounds.end (), p);
-        assert (it != sounds.end ());
+        if (it == sounds.end ()) throw runtime_error ("File not in database: " + p.string ());
         return distance (sounds.begin (), it);
     }
 
+    /**
+     *  Get the path to the sound associated with a given index
+     *
+     *  @param ID index of the sound
+     *
+     *  @return path to the sound
+     */
     path IDToPath (size_t ID)
     {
         return sounds[ID];
