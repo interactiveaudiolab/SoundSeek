@@ -12,18 +12,25 @@
 #include "Common.h"
 #include "FileUtils.h"
 #include "Distance.h"
+
 #include <boost/multi_array.hpp>
 #include <boost/progress.hpp>
-
+#include <ctime>
 #include <limits>
 
+// serialization
+#include "libs/MULTI_ARRAY_SERIALIZATION.hpp"
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <iostream>
+#include <fstream>
+
 #define DEFAULT_DTW_CONSTRAINT .1
+#define DISTANCE_CACHE_PATH "/Library/Application\ Support/SoundSeek/distance.cache"
 
 using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
-
-typedef multi_array<vector<double>, 2> dist_matrix;
 
 class AudioSearchEngine
 {
@@ -31,10 +38,12 @@ public:
     AudioSearchEngine ()
     {
         featureWeights.resize (AudioFeatures::num_features, 1);
+        load_distances();
     }
 
     ~AudioSearchEngine ()
     {
+        save_distances ();
     }
 
     /**
@@ -106,7 +115,7 @@ public:
 #ifdef DEBUG
         progress_display show_progress (sounds.size ());
 #endif
-
+        clock_t start = clock ();
         for (int i = 0; i < sounds.size (); ++i)
         {
             for (int j = i; j < sounds.size (); ++j)
@@ -121,6 +130,9 @@ public:
             ++show_progress;
 #endif
         }
+        double duration = (clock () - start) / (double) CLOCKS_PER_SEC;
+        cerr << "Precalculated distances for " << sounds.size () << " sounds in " << duration << " seconds" << endl;
+        save_distances ();
     }
 
     /**
@@ -176,7 +188,7 @@ public:
         auto query_id = pathToID (query);
 
         vector<path> result (AudioFeatures::num_features);
-
+        clock_t start = clock ();
         for (int i = 0; i < AudioFeatures::num_features; ++i)
         {
             double min_dist = numeric_limits<double>::max ();
@@ -193,6 +205,8 @@ public:
             }
             result[i] = IDToPath (min_id);
         }
+        double duration = (clock () - start) / (double) CLOCKS_PER_SEC;
+        cerr << "Searched " << sounds.size () << " sounds in " << duration << " seconds" << endl;
 
         return result;
     }
@@ -210,13 +224,12 @@ public:
     {
         addFile (query);
 
-        print_dists ();
         auto query_id = pathToID (query);
-
+        clock_t start = clock ();
         vector<double> dists (distances.shape ()[1]);
         for (int i = 0; i < sounds.size (); ++i)
         {
-            if (sounds[i] == query)
+            if (i == query_id)
                 dists[i] = numeric_limits<double>::max ();
             else
                 dists[i] = getWeightedDistance (query, sounds[i]);
@@ -233,6 +246,8 @@ public:
         vector<path> results (num_results);
 
         for (int i = 0; i < num_results; ++i) results[i] = sounds[indices[i]];
+        double duration = (clock () - start) / (double) CLOCKS_PER_SEC;
+        cerr << "Searched " << sounds.size () << " sounds in " << duration << " seconds" << endl;
 
         return results;
     }
@@ -251,11 +266,12 @@ public:
         auto dists = distances[pathToID (query)][pathToID (likedSound)];
         auto nearest_feature_index = min_element (dists.begin (), dists.end ()) - dists.begin ();
         featureWeights[nearest_feature_index] *= 1.1;
+        cerr << featureWeights << endl;
     }
 
 private:
     deque<path> sounds;
-    dist_matrix distances;
+    multi_array<vector<double>, 2> distances;
     vector<double> featureWeights;
 
     /**
@@ -326,6 +342,22 @@ private:
             }
             cerr << endl << endl;
         }
+    }
+
+    void save_distances ()
+    {
+        std::ofstream file (string(getenv("HOME")) + string(DISTANCE_CACHE_PATH));
+        archive::text_oarchive ar (file);
+        boost::serialization::save_multi_array (ar, distances, 1);
+    }
+
+    void load_distances() {
+        try {
+            std::ifstream file (string(getenv("HOME")) + string(DISTANCE_CACHE_PATH));
+            archive::text_iarchive ar (file);
+            boost::serialization::load_multi_array (ar, distances, 1);
+        }
+        catch(...) {}
     }
 };
 
