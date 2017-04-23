@@ -60,6 +60,7 @@
 #include "../src/AudioSearchEngine.h"
 #include "graphwidget.h"
 #include "node.h"
+#include "libs/qcustomplot/qcustomplot.h"
 
 #define RECORD_PATH "/tmp/audiosearch_query.wav"
 
@@ -125,6 +126,7 @@ private:
     bool outputLocationSet;
     bool queryRecorded;
     bool topResults;
+    QVector<double> wav_x,wav_y;
 };
 
 #endif // AUDIORECORDER_H

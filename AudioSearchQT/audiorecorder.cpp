@@ -49,12 +49,18 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QMediaRecorder>
+#include <QVector>
+
+#include "essentia/essentiamath.h"
 
 #include "audiorecorder.h"
 #include "utils.h"
+#include "audioreader.h"
 
 #include "ui_audiorecorder.h"
 
+
+using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
 
@@ -64,6 +70,20 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
     outputLocationSet(false), queryRecorded(false), topResults(true), searchEngine()
 {
     ui->setupUi(this);
+
+    ui->waveform->yAxis->setVisible(false);
+    ui->waveform->xAxis->setVisible(false);
+//    ui->waveform->xAxis->setTicks(false);
+//    ui->waveform->yAxis->setTicks(false);
+    ui->waveform->xAxis->setPadding(0);
+    ui->waveform->yAxis->setPadding(0);
+    ui->waveform->addGraph();
+    ui->waveform->graph(0)->setAntialiased(true);
+    ui->waveform->setContentsMargins(0,0,0,0);
+    ui->waveform->yAxis->setRange(-1,1);
+    ui->waveform->adjustSize();
+//    ui->waveform->layout()->setMargin(5);
+
     graph.setAudioParent(this);
     audioRecorder = new QAudioRecorder(this);
     probe = new QAudioProbe;
@@ -109,7 +129,7 @@ void AudioRecorder::updateProgress(qint64 duration)
     if (audioRecorder->error() != QMediaRecorder::NoError || duration < 2000)
         return;
 
-    ui->statusbar->showMessage(tr("Recorded %1 sec").arg(duration / 1000));
+    //ui->statusbar->showMessage(tr("Recorded %1 sec").arg(duration / 1000));
 }
 
 void AudioRecorder::updateStatus(QMediaRecorder::Status status)
@@ -130,8 +150,8 @@ void AudioRecorder::updateStatus(QMediaRecorder::Status status)
         break;
     }
 
-    if (audioRecorder->error() == QMediaRecorder::NoError)
-        ui->statusbar->showMessage(statusMessage);
+    //if (audioRecorder->error() == QMediaRecorder::NoError)
+        //ui->statusbar->showMessage(statusMessage);
 }
 
 void AudioRecorder::onStateChanged(QMediaRecorder::State state)
@@ -211,7 +231,7 @@ void AudioRecorder::search()
 {
     if (!queryRecorded)
         return;
-    ui->statusbar->showMessage("Searching");
+    //ui->statusbar->showMessage("Searching");
 
 
     topResults = true;
@@ -229,7 +249,7 @@ void AudioRecorder::search()
 
 void AudioRecorder::searchByPath(QUrl searchPath)
 {
-    ui->statusbar->showMessage("Searching");
+    //ui->statusbar->showMessage("Searching");
 
     foreach(path p, searchEngine.getNearestByFeature(path(QUrlToString(searchPath))))
     {
@@ -306,11 +326,24 @@ void AudioRecorder::setOutputLocation(QUrl path)
 
 void AudioRecorder::displayErrorMessage()
 {
-    ui->statusbar->showMessage(audioRecorder->errorString());
+    //ui->statusbar->showMessage(audioRecorder->errorString());
 }
 
 void AudioRecorder::playAudio(QUrl pathToAudio)
 {
+    if (mediaPlayer.media().canonicalUrl() != pathToAudio) {
+        vector<Real> buffer;
+        AudioReader::read_audio(QUrlToString(pathToAudio), buffer);
+        wav_x.resize(buffer.size());
+        wav_y.resize(buffer.size());
+
+        for (int i = 0; i < buffer.size(); ++i)
+            wav_y[i] = buffer[i];
+        iota(wav_x.begin(), wav_x.end(), 0);
+        ui->waveform->graph(0)->setData(wav_x, wav_y);
+        ui->waveform->xAxis->setRange(0, wav_x.last());
+        ui->waveform->replot();
+    }
     if (mediaPlayer.state() == QMediaPlayer::PlayingState || mediaPlayer.media().canonicalUrl() == pathToAudio)
         mediaPlayer.stop();
 
@@ -319,7 +352,7 @@ void AudioRecorder::playAudio(QUrl pathToAudio)
 
     mediaPlayer.play();
 
-    ui->statusbar->showMessage(mediaPlayer.media().canonicalUrl().fileName());
+    ui->waveformLabel->setText(mediaPlayer.media().canonicalUrl().fileName());
 }
 
 void AudioRecorder::playLastAudio()
@@ -332,7 +365,7 @@ void AudioRecorder::playLastAudio()
 void AudioRecorder::stopAudio()
 {
     mediaPlayer.stop();
-    ui->statusbar->clearMessage();
+    //ui->statusbar->clearMessage();
 }
 
 void AudioRecorder::toggleAudio()

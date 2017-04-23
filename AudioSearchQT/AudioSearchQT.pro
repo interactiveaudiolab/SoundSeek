@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = AudioSearchQT
 
-QT += multimedia
+QT += multimedia core
 
 CONFIG += warn_off
 
@@ -25,7 +25,10 @@ HEADERS = \
     ../src/libs/ThreadPool.h \
     starpolygon.h \
     utils.h \
-    ../src/libs/MULTI_ARRAY_SERIALIZATION.hpp
+    ../src/libs/MULTI_ARRAY_SERIALIZATION.hpp \
+    libs/qcustomplot/qcustomplot.h \
+    audioreader.h \
+    audiothumbnail.h
 
 SOURCES = \
     main.cpp \
@@ -37,14 +40,16 @@ SOURCES = \
     edge.cpp \
     ../src/Distance.cpp \
     common-utils.cpp \
-    ../src/FileUtils.cpp
+    ../src/FileUtils.cpp \
+    libs/qcustomplot/qcustomplot.cpp \
+    audiothumbnail.cpp
 
 FORMS += audiorecorder.ui
 
 target.path = /Applications/AudioSearchQT
 INSTALLS += target
 
-QT+=widgets
+QT+=widgets printsupport
 
 QMAKE_LFLAGS += -F /system/Library/Frameworks/ApplicationServices.framework/Frameworks/ImageIo.framework
 LIBS += -framework CoreFoundation
@@ -126,3 +131,10 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../..
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/release/boost_serialization.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/debug/boost_serialization.lib
 else:unix: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/boost/1.62.0/lib/libboost_serialization.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/essentia/2.1_beta3/lib/release/ -lessentia
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/essentia/2.1_beta3/lib/debug/ -lessentia
+else:unix: LIBS += -L$$PWD/../../../../../usr/local/Cellar/essentia/2.1_beta3/lib/ -lessentia
+
+INCLUDEPATH += $$PWD/../../../../../usr/local/Cellar/essentia/2.1_beta3/include
+DEPENDPATH += $$PWD/../../../../../usr/local/Cellar/essentia/2.1_beta3/include

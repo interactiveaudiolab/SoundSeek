@@ -106,7 +106,7 @@ void GraphWidget::addNode(Node *parent, QUrl audioFile)
         parent = nodeList[0];
 
     getScene()->addItem(new Edge(parent, newNode));
-    newNode->setPos(parent->pos().x() + rand()%20 - 10, parent->pos().y() + rand()%20 - 10);
+    newNode->setPos(parent->pos().x() + rand()%40 - 20, parent->pos().y() + rand()%40 - 20);
 
     parent->addChildNode(newNode);
     newNode->setParent(parent);
@@ -115,7 +115,7 @@ void GraphWidget::addNode(Node *parent, QUrl audioFile)
     if (parent->getAudio() == QUrl::fromLocalFile(RECORD_PATH))
         newColor.setHsvF(rand() % 100 / 100., .1, 1);
     else
-        newColor.setHsvF(std::min((float)(parent->getColor().hsvHueF() + rand()%100/1000.f), 1.f), .1, 1); // vary the hue slightly
+        newColor.setHsvF(std::min((float)(parent->getColor().hsvHueF() + rand()%100/500.f), 1.f), .1, 1); // vary the hue slightly
     newNode->setColor(newColor);
 
     qDebug("New node added with audio: " + audioFile.toDisplayString().toUtf8());
@@ -219,36 +219,6 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
 
-//    // Shadow
-//    QRectF sceneRect = this->sceneRect();
-//    QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
-//    QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
-//    if (rightShadow.intersects(rect) || rightShadow.contains(rect))
-//        painter->fillRect(rightShadow, Qt::darkGray);
-//    if (bottomShadow.intersects(rect) || bottomShadow.contains(rect))
-//        painter->fillRect(bottomShadow, Qt::darkGray);
-
-//    // Fill
-//    QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
-//    gradient.setColorAt(0, Qt::white);
-//    gradient.setColorAt(1, Qt::lightGray);
-//    painter->fillRect(rect.intersected(sceneRect), gradient);
-//    painter->setBrush(Qt::NoBrush);
-//    painter->drawRect(sceneRect);
-//    // Text
-//    QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4,
-//                    sceneRect.width() - 4, sceneRect.height() - 4);
-//    QString message(tr("Click and drag the nodes around, and zoom with the mouse "
-//                       "wheel or the '+' and '-' keys"));
-
-//    QFont font = painter->font();
-//    font.setBold(true);
-//    font.setPointSize(14);
-//    painter->setFont(font);
-//    painter->setPen(Qt::lightGray);
-//    painter->drawText(textRect.translated(2, 2), message);
-//    painter->setPen(Qt::black);
-//    painter->drawText(textRect, message);
 }
 //! [6]
 

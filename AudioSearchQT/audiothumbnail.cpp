@@ -1,0 +1,3 @@
+#include "audiothumbnail.h"
+
+
