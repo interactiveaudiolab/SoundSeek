@@ -12,14 +12,17 @@
 #include "Common.h"
 #include "FileUtils.h"
 #include "Distance.h"
+//#include "DistanceMatrix.h"
 
-#include <boost/multi_array.hpp>
 #include <boost/progress.hpp>
+#include <boost/filesystem.hpp>
 #include <ctime>
 #include <limits>
 
 // serialization
-#include "libs/MULTI_ARRAY_SERIALIZATION.hpp"
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/vector.hpp>
+
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <iostream>
@@ -32,13 +35,25 @@ using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
 
+static pair<string, string> operator, (string path1, string path2)
+{
+    if (path1 < path2) return make_pair (path1, path2);
+    return make_pair (path2, path1);
+}
+
+static pair<string, string> operator, (path path1, path path2)
+{
+    if (path1.string () < path2.string ()) return make_pair (path1.string (), path2.string ());
+    return make_pair (path2.string (), path1.string ());
+}
+
 class AudioSearchEngine
 {
 public:
     AudioSearchEngine ()
     {
         featureWeights.resize (AudioFeatures::num_features, 1);
-        load_distances();
+        load_distances ();
     }
 
     ~AudioSearchEngine ()
@@ -63,7 +78,7 @@ public:
      *
      *  @param file          Path to an audio file
      */
-    void addFile (path file, bool resize_matrix = true)
+    void addFile (path file)  //,  bool resize_matrix = true)
     {
         if (!FileUtils::existsAsAudioFile (file))
             throw std::runtime_error (file.string () + " is not a valid audio file.");
@@ -74,7 +89,7 @@ public:
             sounds.push_back (file);
         }
 
-        if (resize_matrix) resize ();
+        // if (resize_matrix) resize ();
     }
 
     /**
@@ -91,18 +106,18 @@ public:
         {
             for (recursive_directory_iterator it (dir); it != recursive_directory_iterator (); ++it)
             {
-                if (FileUtils::existsAsAudioFile (it->path ())) addFile (it->path (), false);
+                if (FileUtils::existsAsAudioFile (it->path ())) addFile (it->path ());
             }
         }
         else
         {
             for (directory_iterator it (dir); it != directory_iterator (); ++it)
             {
-                if (FileUtils::existsAsAudioFile (it->path ())) addFile (it->path (), false);
+                if (FileUtils::existsAsAudioFile (it->path ())) addFile (it->path ());
             }
         }
 
-        resize ();  // resize once at end rather than once for every file added
+        // resize ();  // resize once at end rather than once for every file added
     }
 
     /**
@@ -120,9 +135,9 @@ public:
         {
             for (int j = i; j < sounds.size (); ++j)
             {
-                if (distances[i][j].size () > 0) continue;
+                if (distances[sounds[i], sounds[j]].size () > 0) continue;
                 if (j == i)
-                    distances[i][j] = vector<double> (AudioFeatures::num_features, 0.);
+                    distances[sounds[i], sounds[j]] = vector<double> (AudioFeatures::num_features, 0.);
                 else
                     getFeatureDistances (sounds[i], sounds[j]);
             }
@@ -145,14 +160,12 @@ public:
      */
     vector<double> getFeatureDistances (path a, path b)
     {
-        auto a_id = pathToID (a);
-        auto b_id = pathToID (b);
-        if (distCalculated (a, b)) return distances[a_id][b_id];
+        if (distCalculated (a, b)) return distances[a, b];
 
-        auto dists = Distance::distance (AudioObject (sounds[a_id]), AudioObject (sounds[b_id]), DEFAULT_DTW_CONSTRAINT,
+        auto dists = Distance::distance (AudioObject (a), AudioObject (b), DEFAULT_DTW_CONSTRAINT,
                                          thread::hardware_concurrency ());
-        distances[a_id][b_id] = dists;
-        distances[b_id][a_id] = dists;
+        distances[a, b] = dists;
+        distances[a, b] = dists;
 
         return dists;
     }
@@ -185,25 +198,25 @@ public:
         DBG ("getNearestByFeature");
         addFile (query);
 
-        auto query_id = pathToID (query);
+        // auto query_id = pathToID (query);
 
         vector<path> result (AudioFeatures::num_features);
         clock_t start = clock ();
         for (int i = 0; i < AudioFeatures::num_features; ++i)
         {
-            double min_dist = numeric_limits<double>::max ();
-            size_t min_id = query_id;
+            auto min_dist = numeric_limits<double>::max ();
+            auto min_sound = query;
 
-            for (int j = 0; j < distances.shape ()[1]; ++j)
+            for (int j = 0; j < sounds.size (); ++j)
             {
-                auto dist = getFeatureDistances (query, IDToPath (j))[i];
-                if (j != query_id && dist > 0 && dist < min_dist)
+                auto dist = getFeatureDistances (query, sounds[j])[i];
+                if (sounds[j] != query && dist > 0 && dist < min_dist)
                 {
                     min_dist = dist;
-                    min_id = j;
+                    min_sound = sounds[j];
                 }
             }
-            result[i] = IDToPath (min_id);
+            result[i] = min_sound;
         }
         double duration = (clock () - start) / (double) CLOCKS_PER_SEC;
         cerr << "Searched " << sounds.size () << " sounds in " << duration << " seconds" << endl;
@@ -224,19 +237,19 @@ public:
     {
         addFile (query);
 
-        auto query_id = pathToID (query);
+        // auto query_id = pathToID (query);
         clock_t start = clock ();
-        vector<double> dists (distances.shape ()[1]);
+        vector<double> dists (sounds.size ());
         for (int i = 0; i < sounds.size (); ++i)
         {
-            if (i == query_id)
+            if (sounds[i] == query)
                 dists[i] = numeric_limits<double>::max ();
             else
                 dists[i] = getWeightedDistance (query, sounds[i]);
         }
 
         // argsort
-        vector<int> indices (distances.shape ()[1]);
+        vector<int> indices (sounds.size ());
         iota (indices.begin (), indices.end (), 0);
 
         sort (indices.begin (), indices.end (), [&](int a, int b) { return dists[a] < dists[b]; });
@@ -263,7 +276,7 @@ public:
     {
         // very naive feature reweighting. find feature axis along which the two sounds are closest and weight that
         // feature higher
-        auto dists = distances[pathToID (query)][pathToID (likedSound)];
+        auto dists = distances[query, likedSound];
         auto nearest_feature_index = min_element (dists.begin (), dists.end ()) - dists.begin ();
         featureWeights[nearest_feature_index] *= 1.1;
         cerr << featureWeights << endl;
@@ -271,20 +284,21 @@ public:
 
 private:
     deque<path> sounds;
-    multi_array<vector<double>, 2> distances;
+    // multi_array<vector<double>, 2> distances;
+    map<pair<string, string>, vector<double>> distances;
     vector<double> featureWeights;
 
     /**
      *  Resize the distance matrix to match the number of sounds
      */
-    void resize ()
-    {
-        assert (distances.shape ()[0] == distances.shape ()[1]);
-        if (distances.shape ()[0] != sounds.size ())
-        {
-            distances.resize (extents[sounds.size ()][sounds.size ()]);
-        }
-    }
+    //    void resize ()
+    //    {
+    //        assert (distances.shape ()[0] == distances.shape ()[1]);
+    //        if (distances.shape ()[0] != sounds.size ())
+    //        {
+    //            distances.resize (extents[sounds.size ()][sounds.size ()]);
+    //        }
+    //    }
 
     /**
      *  Return true if the SearchEngine has already calculated a distance for a pair of sounds
@@ -296,68 +310,56 @@ private:
      */
     bool distCalculated (path a, path b)
     {
-        auto a_id = pathToID (a);
-        auto b_id = pathToID (b);
-
-        if (distances[a_id][b_id].size () == 0) return false;
+        if (distances[a, b].size () == 0) return false;
         return true;
-    }
-
-    /**
-     *  Get the index of a sound in the distance matrix
-     *
-     *  @param p path to an audio file
-     *
-     *  @return an index
-     */
-    size_t pathToID (path p)
-    {
-        auto it = find (sounds.begin (), sounds.end (), p);
-        if (it == sounds.end ()) throw runtime_error ("File not in database: " + p.string ());
-        return distance (sounds.begin (), it);
-    }
-
-    /**
-     *  Get the path to the sound associated with a given index
-     *
-     *  @param ID index of the sound
-     *
-     *  @return path to the sound
-     */
-    path IDToPath (size_t ID)
-    {
-        return sounds[ID];
     }
 
     void print_dists ()
     {
-        DBG ("distances.shape: " << distances.shape ()[0] << ", " << distances.shape ()[1]);
-
-        for (int i = 0; i < distances.shape ()[0]; ++i)
-        {
-            for (int j = 0; j < distances.shape ()[1]; ++j)
-            {
-                DBG ("i: " << i << " j: " << j);
-                cerr << (distances[i][j].size () > 0);
-            }
-            cerr << endl << endl;
-        }
+        //        DBG ("distances.shape: " << distances.shape ()[0] << ", " << distances.shape ()[1]);
+        //
+        //        for (int i = 0; i < distances.shape ()[0]; ++i)
+        //        {
+        //            for (int j = 0; j < distances.shape ()[1]; ++j)
+        //            {
+        //                DBG ("i: " << i << " j: " << j);
+        //                cerr << (distances[i][j].size () > 0);
+        //            }
+        //            cerr << endl << endl;
+        //        }
     }
 
     void save_distances ()
     {
-        std::ofstream file (string(getenv("HOME")) + string(DISTANCE_CACHE_PATH));
-        archive::text_oarchive ar (file);
-        boost::serialization::save_multi_array (ar, distances, 1);
+        try
+        {
+            path cache_dir (string (getenv ("HOME")) + string (DISTANCE_CACHE_PATH));
+            cache_dir = cache_dir.parent_path ();
+            if (!is_directory (cache_dir)) create_directory (cache_dir);
+            std::ofstream file (string (getenv ("HOME")) + string (DISTANCE_CACHE_PATH));
+            archive::text_oarchive ar (file);
+            boost::serialization::serialize (ar, distances, 1);
+            cerr << "Saving distance cache..." << endl;
+        }
+        catch (...)
+        {
+            cerr << "Writing distance cache failed" << endl;
+        }
     }
 
-    void load_distances() {
-        try {
-            std::ifstream file (string(getenv("HOME")) + string(DISTANCE_CACHE_PATH));
+    void load_distances ()
+    {
+        try
+        {
+            std::ifstream file (string (getenv ("HOME")) + string (DISTANCE_CACHE_PATH));
             archive::text_iarchive ar (file);
-            boost::serialization::load_multi_array (ar, distances, 1);
+            boost::serialization::serialize (ar, distances, 1);
+            cerr << "Loading distance cache..." << endl;
         }
-        catch(...) {}
+        catch (...)
+        {
+            cerr << "Loading distance cache failed" << endl;
+        }
     }
 };
 
