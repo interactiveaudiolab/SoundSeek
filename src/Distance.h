@@ -8,6 +8,8 @@
 #ifndef DTW_h
 #define DTW_h
 
+#include "libs/catch.hpp"
+
 #include <cassert>
 #include <limits>
 #include "Common.h"
@@ -55,5 +57,7 @@ double DTW (const vector<double> &s, const vector<double> &t);
 
 double weightedPNorm (const vector<double> &dists, const vector<double> &weights, int p = 2);
 }
+
+
 
 #endif /* DTW_h */

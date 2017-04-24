@@ -91,6 +91,7 @@ static bool analysisFileExists (path path_to_audio)
 {
     return is_regular_file (getAnalysisFilePath (path_to_audio));
 }
+
 static void getAllAnalysisFiles (path dir, vector<path>& dest, bool recursive = true)
 {
     directory_iterator end_itr;

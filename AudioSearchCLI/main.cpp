@@ -6,6 +6,9 @@
 //
 #define CLI
 
+#define CATCH_CONFIG_RUNNER
+#include "catch.hpp"
+
 #include <stdio.h>
 #include <chrono>
 #include "../src/libs/json.hpp"
@@ -24,6 +27,7 @@ using nlohmann::json;
 
 int main (int argc, const char* argv[])
 {
+    int result = Catch::Session ().run (argc, argv);
     // int result = Catch::Session ().run (argc, argv);
     // DBG (result);
     // Distance::testDTW ();

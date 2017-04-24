@@ -11,13 +11,13 @@
 		4C03551A1E8EE7DD006069DB /* FeatureExtractor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C0355111E8EE7DD006069DB /* FeatureExtractor.cpp */; };
 		4C30BF9F1E8994E60071EC8A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C30BF9E1E8994E60071EC8A /* main.cpp */; };
 		4C8D85C71E2D4EA2001DA40E /* libAquila.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C8D85C61E2D4EA2001DA40E /* libAquila.a */; };
+		4C9D3AAD1E9C1F0800F6AA25 /* tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C9D3AAC1E9C1EB000F6AA25 /* tests.cpp */; };
 		4CA7842B1E491BD300133ADC /* libboost_thread-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CA7842A1E491BD300133ADC /* libboost_thread-mt.a */; };
 		4CDF9D0B1E0072690092C5A5 /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CDF9D091E0072690092C5A5 /* libboost_filesystem.a */; };
 		4CDF9D0C1E0072690092C5A5 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CDF9D0A1E0072690092C5A5 /* libboost_system.a */; };
 		4CDF9D141E00803E0092C5A5 /* libessentia.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CDF9D131E00803E0092C5A5 /* libessentia.dylib */; };
 		4CE6960D1E974A250037AEE7 /* libboost_serialization.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE6960C1E974A250037AEE7 /* libboost_serialization.a */; };
 		4CE696101E974D260037AEE7 /* AudioSearchEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE6960E1E974D260037AEE7 /* AudioSearchEngine.cpp */; };
-		4CE696121E974F5E0037AEE7 /* tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE696111E974F5E0037AEE7 /* tests.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -525,6 +525,7 @@
 		4C30BF9E1E8994E60071EC8A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
 		4C49B3FE1E0068FE00103BEC /* AudioSearchCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AudioSearchCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C8D85C61E2D4EA2001DA40E /* libAquila.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAquila.a; path = ../../../../../usr/local/lib/libAquila.a; sourceTree = "<group>"; };
+		4C9D3AAC1E9C1EB000F6AA25 /* tests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tests.cpp; sourceTree = "<group>"; };
 		4CA7842A1E491BD300133ADC /* libboost_thread-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_thread-mt.a"; path = "../../../../../usr/local/Cellar/boost/1.62.0/lib/libboost_thread-mt.a"; sourceTree = "<group>"; };
 		4CDF9D091E0072690092C5A5 /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = /usr/local/Cellar/boost/1.62.0/lib/libboost_filesystem.a; sourceTree = "<absolute>"; };
 		4CDF9D0A1E0072690092C5A5 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = /usr/local/Cellar/boost/1.62.0/lib/libboost_system.a; sourceTree = "<absolute>"; };
@@ -533,7 +534,8 @@
 		4CE6960C1E974A250037AEE7 /* libboost_serialization.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_serialization.a; path = ../../../../../usr/local/Cellar/boost/1.62.0/lib/libboost_serialization.a; sourceTree = "<group>"; };
 		4CE6960E1E974D260037AEE7 /* AudioSearchEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioSearchEngine.cpp; sourceTree = "<group>"; };
 		4CE6960F1E974D260037AEE7 /* AudioSearchEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioSearchEngine.h; sourceTree = "<group>"; };
-		4CE696111E974F5E0037AEE7 /* tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tests.cpp; sourceTree = "<group>"; };
+		4CF3DD931EA540D500CE08B5 /* MULTI_ARRAY_SERIALIZATION.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MULTI_ARRAY_SERIALIZATION.hpp; sourceTree = "<group>"; };
+		4CF3DD941EA5483100CE08B5 /* DistanceMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistanceMatrix.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -557,10 +559,11 @@
 			isa = PBXGroup;
 			children = (
 				4C03550A1E8EE7DD006069DB /* AudioFeatures.h */,
+				4C9D3AAC1E9C1EB000F6AA25 /* tests.cpp */,
 				4C03550B1E8EE7DD006069DB /* AudioObject.h */,
-				4CE696111E974F5E0037AEE7 /* tests.cpp */,
 				4CE6960E1E974D260037AEE7 /* AudioSearchEngine.cpp */,
 				4CE6960F1E974D260037AEE7 /* AudioSearchEngine.h */,
+				4CF3DD941EA5483100CE08B5 /* DistanceMatrix.h */,
 				4C03550E1E8EE7DD006069DB /* Common.h */,
 				4C03550F1E8EE7DD006069DB /* Distance.cpp */,
 				4C0355101E8EE7DD006069DB /* Distance.h */,
@@ -580,6 +583,7 @@
 				4C0355151E8EE7DD006069DB /* catch.hpp */,
 				4C0355161E8EE7DD006069DB /* json.hpp */,
 				4C0355171E8EE7DD006069DB /* ThreadPool.h */,
+				4CF3DD931EA540D500CE08B5 /* MULTI_ARRAY_SERIALIZATION.hpp */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -1735,11 +1739,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C9D3AAD1E9C1F0800F6AA25 /* tests.cpp in Sources */,
 				4C03551A1E8EE7DD006069DB /* FeatureExtractor.cpp in Sources */,
 				4C0355191E8EE7DD006069DB /* Distance.cpp in Sources */,
 				4C30BF9F1E8994E60071EC8A /* main.cpp in Sources */,
 				4CE696101E974D260037AEE7 /* AudioSearchEngine.cpp in Sources */,
-				4CE696121E974F5E0037AEE7 /* tests.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
