@@ -2,6 +2,8 @@
 #define AUDIOTHUMBNAIL_H
 #include <QtWidgets>
 #include <QVector>
+#include <QLabel>
+#include <QFrame>
 
 #include <essentia/algorithmfactory.h>
 #include "libs/qcustomplot/qcustomplot.h"
@@ -11,11 +13,15 @@ using namespace std;
 using namespace essentia;
 using namespace essentia::standard;
 
-class AudioThumbnail
+class AudioThumbnail : public QWidget
 {
 public:
-    AudioThumbnail() {
+    AudioThumbnail() : filenameLabel(this), durationLabel(this),
+                       sampleRateLabel(this), bitRateLabel(this),
+                       channelsLabel(this), frame(this), waveform(this)
+    {
         waveform.addGraph();
+
     }
 
     void setAudio(QUrl pathToAudio) {
@@ -26,6 +32,7 @@ public:
 private:
     QCustomPlot waveform;
     QLabel filenameLabel, durationLabel, sampleRateLabel, bitRateLabel, channelsLabel;
+    QFrame frame;
     QVector<double> x, y;
     QUrl audioFile;
 

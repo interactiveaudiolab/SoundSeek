@@ -22,265 +22,195 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <layout class="QVBoxLayout" name="lefbarLayout">
-      <property name="spacing">
-       <number>6</number>
-      </property>
-      <property name="sizeConstraint">
-       <enum>QLayout::SetMinAndMaxSize</enum>
-      </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">font-weight: bold;</string>
-          </property>
-          <property name="text">
-           <string>Input Device:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="audioDeviceBox">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="searchDirLayout">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="maximumSize">
-           <size>
-            <width>60</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">font-weight: bold;</string>
-          </property>
-          <property name="text">
-           <string>Folder:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="searchDirLabel">
-          <property name="maximumSize">
-           <size>
-            <width>210</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>None</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="searchDirButton">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>80</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Open</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="Line" name="line_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QGridLayout" name="recordPlayLayout">
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <item row="0" column="2">
-         <widget class="QPushButton" name="playQueryButton">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Play</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QPushButton" name="recordButton">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>2342342</height>
-           </size>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Record</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="Line" name="line_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="searchButton">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="autoFillBackground">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Search</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="ResultsLabel">
-        <property name="styleSheet">
-         <string notr="true">font-weight: bold;</string>
-        </property>
-        <property name="text">
-         <string>Top Results (Nearest First): </string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QListWidget" name="topResults">
-        <property name="maximumSize">
-         <size>
-          <width>362</width>
-          <height>16777215</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="resultViewButton">
-        <property name="text">
-         <string>Stop Audio</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
      <layout class="QVBoxLayout" name="rightLayout">
       <property name="leftMargin">
        <number>0</number>
       </property>
       <item>
-       <layout class="QVBoxLayout" name="waveformLayout">
-        <property name="spacing">
-         <number>0</number>
-        </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <property name="leftMargin">
          <number>0</number>
         </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
         <item>
-         <widget class="QLabel" name="waveformLabel">
-          <property name="text">
-           <string/>
+         <layout class="QVBoxLayout" name="lefbarLayout">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinAndMaxSize</enum>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="searchDirLayout">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="maximumSize">
+               <size>
+                <width>60</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font-weight: bold;</string>
+              </property>
+              <property name="text">
+               <string>Folder:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="searchDirLabel">
+              <property name="maximumSize">
+               <size>
+                <width>210</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <property name="text">
+               <string>None</string>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="searchDirButton">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Open</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="Line" name="line_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="recordPlayLayout">
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="playQueryButton">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Play</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="recordButton">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>300</width>
+                <height>2342342</height>
+               </size>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>Record</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="Line" name="line_4">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QCustomPlot" name="waveform" native="true">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>60</height>
-           </size>
+         <layout class="QVBoxLayout" name="waveformLayout">
+          <property name="spacing">
+           <number>0</number>
           </property>
-          <property name="autoFillBackground">
-           <bool>true</bool>
+          <property name="leftMargin">
+           <number>0</number>
           </property>
-         </widget>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="waveformLabel">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCustomPlot" name="waveform" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>60</height>
+             </size>
+            </property>
+            <property name="autoFillBackground">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -295,6 +225,28 @@
     </item>
    </layout>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>973</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuDevices">
+    <property name="title">
+     <string>Devices</string>
+    </property>
+    <addaction name="actionInput_Device"/>
+   </widget>
+   <addaction name="menuDevices"/>
+  </widget>
+  <action name="actionInput_Device">
+   <property name="text">
+    <string>Input Device</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -323,50 +275,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>searchButton</sender>
-   <signal>clicked()</signal>
-   <receiver>AudioRecorder</receiver>
-   <slot>search()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>157</x>
-     <y>146</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>254</x>
-     <y>72</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>searchDirButton</sender>
    <signal>clicked()</signal>
    <receiver>AudioRecorder</receiver>
    <slot>setSearchDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>729</x>
+     <x>453</x>
      <y>75</y>
     </hint>
     <hint type="destinationlabel">
      <x>289</x>
      <y>97</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>topResults</sender>
-   <signal>itemDoubleClicked(QListWidgetItem*)</signal>
-   <receiver>AudioRecorder</receiver>
-   <slot>resultClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>308</x>
-     <y>296</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>367</y>
     </hint>
    </hints>
   </connection>
@@ -377,28 +297,12 @@
    <slot>playQuery()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>854</x>
+     <x>481</x>
      <y>116</y>
     </hint>
     <hint type="destinationlabel">
      <x>417</x>
      <y>103</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>resultViewButton</sender>
-   <signal>clicked()</signal>
-   <receiver>AudioRecorder</receiver>
-   <slot>stopAudio()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>420</x>
-     <y>636</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>485</x>
-     <y>412</y>
     </hint>
    </hints>
   </connection>

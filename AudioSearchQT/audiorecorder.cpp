@@ -100,19 +100,21 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
     probe->setSource(audioRecorder);
 
 
-    //audio devices
-    ui->audioDeviceBox->addItem(tr("Default"), QVariant(QString()));
-    foreach (const QString &device, audioRecorder->audioInputs()) {
-        ui->audioDeviceBox->addItem(device, QVariant(device));
-    }
+//    //audio devices
+//    ui->actionInput_Device->isCheckable()  (tr("Default"), QVariant(QString()));
+//    foreach (const QString &device, audioRecorder->audioInputs()) {
+//        ui->menuDevices->addItem(device, QVariant(device));
+//    }
 
 
-    ui->searchButton->setEnabled(false);
+//    ui->searchButton->setEnabled(false);
     ui->playQueryButton->setEnabled(false);
     ui->resultViewButton->setEnabled(false);
     ui->graphLayout->addWidget(&graph);
-    ui->topResults->setEnabled(false);
-    ui->ResultsLabel->setEnabled(false);
+    ui->recordButton->setEnabled(false);
+
+//    ui->topResults->setEnabled(false);
+//    ui->ResultsLabel->setEnabled(false);
 
     connect(audioRecorder, SIGNAL(durationChanged(qint64)), this,
             SLOT(updateProgress(qint64)));
@@ -194,7 +196,7 @@ static QVariant boxValue(const QComboBox *box)
 void AudioRecorder::toggleRecord()
 {
     if (audioRecorder->state() == QMediaRecorder::StoppedState) {
-        audioRecorder->setAudioInput(boxValue(ui->audioDeviceBox).toString());
+        //audioRecorder->setAudioInput(boxValue(ui->audioDeviceBox).toString());
 
         queryPath = QUrl::fromLocalFile(QUERY_DIR+QString(QUERY_PREFIX)+QTime::currentTime().toString(Qt::DefaultLocaleLongDate)+".wav");
         setOutputLocation(queryPath);
@@ -222,7 +224,7 @@ void AudioRecorder::toggleRecord()
     else {
         audioRecorder->stop();
         queryRecorded = true;
-        ui->searchButton->setEnabled(true);
+//        ui->searchButton->setEnabled(true);
         ui->playQueryButton->setEnabled(true);
         graph.clear();
         graph.addNode(nullptr, queryPath, 0);
@@ -280,13 +282,14 @@ void AudioRecorder::setSearchDirectory()
 
     searchEngine.calcAllDistances();
     ui->searchDirLabel->setText(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()));
+    ui->recordButton->setEnabled(true);
 }
 
 void AudioRecorder::resultClicked(){
     //qDebug ("result clicked");
-    auto currentItem = ui->topResults->currentItem();
-    auto audio = QUrl::fromLocalFile(currentItem->text());
-    playAudio(audio);
+//    auto currentItem = ui->topResults->currentItem();
+//    auto audio = QUrl::fromLocalFile(currentItem->text());
+//    playAudio(audio);
 }
 
 void AudioRecorder::playQuery()
