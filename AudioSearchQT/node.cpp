@@ -76,7 +76,7 @@ Node::Node(GraphWidget *graphWidget)
     setZValue(1);
     color.setHsvF(rand()%100/100.f, .1, 1);
     radius = 20;
-    rating = -1;
+    rating = 0;
 
 }
 
@@ -212,8 +212,6 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
     else { // if left click, play audio
        graph->playAudio(audioFile);
-       if (rating == -1)
-           rating = 0;
     }
     update();
     QGraphicsItem::mousePressEvent(event);
