@@ -84,13 +84,14 @@ GraphWidget::GraphWidget(QWidget *parent)
 }
 //! [1]
 
-void GraphWidget::addNode(Node *parent, QUrl audioFile)
+void GraphWidget::addNode(Node *parent, QUrl audioFile, int rating)
 {
     if (findNode(audioFile))
         return;
 
     Node* newNode = new Node(this);
     newNode->setAudio(audioFile);
+    newNode->setRating(rating);
     getScene()->addItem(newNode);
     nodeList << newNode;
 
@@ -112,7 +113,7 @@ void GraphWidget::addNode(Node *parent, QUrl audioFile)
     newNode->setParent(parent);
 
     QColor newColor(parent->getColor().lighter());
-    if (parent->getAudio() == QUrl::fromLocalFile(RECORD_PATH))
+    if (parent->getAudio().toLocalFile().contains(QUERY_PREFIX))
         newColor.setHsvF(rand() % 100 / 100., .1, 1);
     else
         newColor.setHsvF(std::min((float)(parent->getColor().hsvHueF() + rand()%100/500.f), 1.f), .1, 1); // vary the hue slightly
@@ -249,6 +250,12 @@ void GraphWidget::zoomIn()
 void GraphWidget::zoomOut()
 {
     scaleView(1 / qreal(1.2));
+}
+
+void GraphWidget::clear()
+{
+    scene()->clear();
+    nodeList.clear();
 }
 
 

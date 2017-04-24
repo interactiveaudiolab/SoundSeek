@@ -50,9 +50,13 @@
 #include <QFileDialog>
 #include <QMediaRecorder>
 #include <QVector>
+#include <QTime>
+#include <QFile>
+#include <QDir>
 
 #include "essentia/essentiamath.h"
 
+#include "../src/FileUtils.h"
 #include "audiorecorder.h"
 #include "utils.h"
 #include "audioreader.h"
@@ -70,6 +74,10 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
     outputLocationSet(false), queryRecorded(false), topResults(true), searchEngine()
 {
     ui->setupUi(this);
+
+    QDir tmp(QUERY_DIR);
+    if (!tmp.exists())
+       tmp.mkpath(".");
 
     ui->waveform->yAxis->setVisible(false);
     ui->waveform->xAxis->setVisible(false);
@@ -91,7 +99,6 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
 //            this, SLOT(processBuffer(QAudioBuffer)));
     probe->setSource(audioRecorder);
 
-    setOutputLocation(QUrl(RECORD_PATH));
 
     //audio devices
     ui->audioDeviceBox->addItem(tr("Default"), QVariant(QString()));
@@ -99,7 +106,6 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
         ui->audioDeviceBox->addItem(device, QVariant(device));
     }
 
-    queryPath = boost::filesystem::path(RECORD_PATH);
 
     ui->searchButton->setEnabled(false);
     ui->playQueryButton->setEnabled(false);
@@ -120,6 +126,8 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
 
 AudioRecorder::~AudioRecorder()
 {
+    QDir tmp(QUERY_DIR);
+    tmp.removeRecursively();
     delete audioRecorder;
     delete probe;
 }
@@ -188,6 +196,8 @@ void AudioRecorder::toggleRecord()
     if (audioRecorder->state() == QMediaRecorder::StoppedState) {
         audioRecorder->setAudioInput(boxValue(ui->audioDeviceBox).toString());
 
+        queryPath = QUrl::fromLocalFile(QUERY_DIR+QString(QUERY_PREFIX)+QTime::currentTime().toString(Qt::DefaultLocaleLongDate)+".wav");
+        setOutputLocation(queryPath);
         QAudioEncoderSettings settings;
 //        settings.setCodec(boxValue(ui->audioCodecBox).toString());
 //        settings.setSampleRate(boxValue(ui->sampleRateBox).toInt());
@@ -214,7 +224,9 @@ void AudioRecorder::toggleRecord()
         queryRecorded = true;
         ui->searchButton->setEnabled(true);
         ui->playQueryButton->setEnabled(true);
-        graph.addNode(nullptr, QUrl::fromLocalFile(RECORD_PATH));
+        graph.clear();
+        graph.addNode(nullptr, queryPath, 0);
+        searchByPath(queryPath);
     }
 }
 
@@ -233,16 +245,14 @@ void AudioRecorder::search()
         return;
     //ui->statusbar->showMessage("Searching");
 
-
     topResults = true;
     //updateResults();
 
     //ui->resultViewButton->setEnabled(true);
     //ui->statusbar->showMessage("Search %d files", searchEngine.getNumSearchFiles());
-
-    foreach(path p, searchEngine.getNearestByFeature(queryPath))
+    auto* parent = graph.findNode(queryPath);
+    foreach(path p, searchEngine.getNearestWeighted(QUrlToPath(queryPath), 7))
     {
-        auto* parent = graph.findNode(QUrl::fromLocalFile(QString::fromStdString(queryPath.string())));
         graph.addNode (parent, pathToUrl(p));
     }
 }
@@ -250,12 +260,13 @@ void AudioRecorder::search()
 void AudioRecorder::searchByPath(QUrl searchPath)
 {
     //ui->statusbar->showMessage("Searching");
-
-    foreach(path p, searchEngine.getNearestByFeature(path(QUrlToString(searchPath))))
+    auto* parent = graph.findNode(searchPath);
+    if (!parent)
+        return;
+    foreach(path p, searchEngine.getNearestWeighted(QUrlToPath(searchPath), 7))
     {
         cout << p << endl;
-        auto* parent = graph.findNode(searchPath);
-        graph.addNode (parent, pathToUrl(p));
+        graph.addNode (parent, pathToUrl(p.string()));
     }
 }
 
@@ -280,7 +291,7 @@ void AudioRecorder::resultClicked(){
 
 void AudioRecorder::playQuery()
 {
-    playAudio(QUrl::fromLocalFile(RECORD_PATH));
+    playAudio(queryPath);
 }
 
 void AudioRecorder::toggleResultView()
@@ -333,7 +344,7 @@ void AudioRecorder::playAudio(QUrl pathToAudio)
 {
     if (mediaPlayer.media().canonicalUrl() != pathToAudio) {
         vector<Real> buffer;
-        AudioReader::read_audio(QUrlToString(pathToAudio), buffer);
+        AudioReader::read_audio(pathToAudio.toString().toStdString(), buffer);
         wav_x.resize(buffer.size());
         wav_y.resize(buffer.size());
 

@@ -55,6 +55,8 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 #include <QKeyEvent>
+#include <QVector>
+#include <QFile>
 
 #include "boost/filesystem.hpp"
 #include "../src/AudioSearchEngine.h"
@@ -62,7 +64,8 @@
 #include "node.h"
 #include "libs/qcustomplot/qcustomplot.h"
 
-#define RECORD_PATH "/tmp/audiosearch_query.wav"
+#define QUERY_DIR "/tmp/SoundSeek/"
+#define QUERY_PREFIX "soundseek_query_"
 
 
 QT_BEGIN_NAMESPACE
@@ -121,7 +124,7 @@ private:
 
     GraphWidget graph;
 
-    boost::filesystem::path queryPath;
+    QUrl queryPath;
     AudioSearchEngine searchEngine;
     bool outputLocationSet;
     bool queryRecorded;

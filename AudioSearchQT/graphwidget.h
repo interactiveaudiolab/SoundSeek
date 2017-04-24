@@ -72,13 +72,14 @@ class GraphWidget : public QGraphicsView
 public:
     GraphWidget(QWidget *parent = 0);
 
-    void addNode(Node* parent, QUrl audioFile);
+    void addNode(Node* parent, QUrl audioFile, int rating = -1);
     Node* findNode(QUrl audioFile);
     void itemMoved();
     QGraphicsScene* getScene() { return scene(); }
     void playAudio(QUrl audioFile);
     void setAudioParent(AudioRecorder* audioParent_) { audioParent = audioParent_; }
     AudioRecorder* getAudioParent() { return audioParent; }
+    void clear();
 public slots:
     void shuffle();
     void zoomIn();
