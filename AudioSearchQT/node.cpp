@@ -212,6 +212,8 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
     else { // if left click, play audio
        graph->playAudio(audioFile);
+       if (rating == -1)
+            rating = 0;
     }
     update();
     QGraphicsItem::mousePressEvent(event);

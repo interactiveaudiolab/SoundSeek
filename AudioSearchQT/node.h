@@ -102,6 +102,8 @@ public:
     void setColor(QColor newColor) { color = newColor; }
     QUrl getAudio() { return audioFile; }
     void setAudio(QUrl audioFile_) { audioFile = audioFile_; }
+    int getRating() { return rating; }
+    void setRating(int rating_) {rating = rating_; }
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
@@ -124,7 +126,7 @@ private:
     QColor color;
     QUrl audioFile;
     int radius;
-    int rating=-1;
+    int rating;
 };
 //! [0]
 
