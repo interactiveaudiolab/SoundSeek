@@ -3,7 +3,7 @@ TARGET = AudioSearchQT
 
 QT += multimedia core
 
-CONFIG += warn_off
+CONFIG += warn_off static
 
 win32:INCLUDEPATH += $$PWD
 

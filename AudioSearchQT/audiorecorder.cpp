@@ -109,7 +109,7 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
 
 //    ui->searchButton->setEnabled(false);
     ui->playQueryButton->setEnabled(false);
-    ui->resultViewButton->setEnabled(false);
+//    ui->resultViewButton->setEnabled(false);
     ui->graphLayout->addWidget(&graph);
     ui->recordButton->setEnabled(false);
 
@@ -300,11 +300,11 @@ void AudioRecorder::playQuery()
 void AudioRecorder::toggleResultView()
 {
     if (topResults){
-        ui->resultViewButton->setText("Show Nearest by Feature");
+//        ui->resultViewButton->setText("Show Nearest by Feature");
     }
     else
     {
-        ui->resultViewButton->setText("Show Top Results");
+//        ui->resultViewButton->setText("Show Top Results");
     }
     updateResults();
     topResults = !topResults;
