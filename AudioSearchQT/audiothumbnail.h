@@ -1,85 +1,43 @@
 #ifndef AUDIOTHUMBNAIL_H
 #define AUDIOTHUMBNAIL_H
-#include <QtWidgets>
+
+#include <QWidget>
 #include <QVector>
-#include <QLabel>
-#include <QFrame>
+#include <QUrl>
 
-#include <essentia/algorithmfactory.h>
-#include "libs/qcustomplot/qcustomplot.h"
-#include "utils.h"
-
-using namespace std;
-using namespace essentia;
-using namespace essentia::standard;
+QT_BEGIN_NAMESPACE
+namespace Ui {
+class AudioThumbnail;
+}
+QT_END_NAMESPACE
 
 class AudioThumbnail : public QWidget
 {
+    Q_OBJECT
+
 public:
-    AudioThumbnail() : filenameLabel(this), durationLabel(this),
-                       sampleRateLabel(this), bitRateLabel(this),
-                       channelsLabel(this), frame(this), waveform(this)
-    {
-        waveform.addGraph();
+    explicit AudioThumbnail(QWidget *parent = 0);
+    ~AudioThumbnail();
 
-    }
+    void setAudio(QUrl pathToAudio);
+    void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 
-    void setAudio(QUrl pathToAudio) {
-        if (audioFile != pathToAudio)
-            read_audio(QUrlToString(pathToAudio));
-    }
+public slots:
+    void setIsPlaying(bool isPlaying);
+
+private slots:
+    void playButtonToggled();
+
+signals:
+    void playButtonClicked();
 
 private:
-    QCustomPlot waveform;
-    QLabel filenameLabel, durationLabel, sampleRateLabel, bitRateLabel, channelsLabel;
-    QFrame frame;
+    Ui::AudioThumbnail *ui;
+
     QVector<double> x, y;
     QUrl audioFile;
 
-    void read_audio(string pathToAudio)
-    {
-        essentia::init();
-        AlgorithmFactory& factory = standard::AlgorithmFactory::instance();
-
-        Algorithm* audio = factory.create("EasyLoader",
-                                          "filename", pathToAudio,
-                                          "sampleRate", 11025,
-                                          "replayGain", 0);
-        Algorithm* meta = factory.create("MetadataReader",
-                                         "filename", pathToAudio);
-
-        vector<Real> buffer;
-        string duration, sampleRate, bitrate, channels;
-        audio->output("audio").set(buffer);
-
-        meta->output("duration").set(duration);
-        meta->output("sampleRate").set(sampleRate);
-        meta->output("bitrate").set(bitrate);
-        meta->output("channels").set(channels);
-
-        audio->compute();
-        meta->compute();
-
-        delete meta;
-        delete audio;
-        essentia::shutdown();
-
-        durationLabel.setText(QString::fromStdString(duration));
-        sampleRateLabel.setText(QString::fromStdString(sampleRate));
-        bitRateLabel.setText(QString::fromStdString(bitrate));
-        channelsLabel.setText(QString::fromStdString(channels));
-
-        x.resize(buffer.size());
-        y.resize(buffer.size());
-
-        for (int i = 0; i < buffer.size(); ++i)
-            y[i] = buffer[i];
-        iota(x.begin(), y.end(), 0);
-        waveform.graph(0)->setData(x, y);
-        waveform.xAxis->setRange(0, x.last());
-        waveform.replot();
-
-    }
+    void readAudio(QUrl pathToAudio);
 };
 
 #endif // AUDIOTHUMBNAIL_H

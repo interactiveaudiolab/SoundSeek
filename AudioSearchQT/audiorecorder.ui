@@ -172,30 +172,11 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QLabel" name="waveformLabel">
+           <widget class="AudioThumbnail" name="waveform" native="true">
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCustomPlot" name="waveform" native="true">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>60</height>
+              <height>130</height>
              </size>
             </property>
             <property name="autoFillBackground">
@@ -243,9 +224,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QCustomPlot</class>
+   <class>AudioThumbnail</class>
    <extends>QWidget</extends>
-   <header>libs/qcustomplot/qcustomplot.h</header>
+   <header>audiothumbnail.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

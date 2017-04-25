@@ -101,7 +101,7 @@ public:
     QColor getColor() { return color; }
     void setColor(QColor newColor) { color = newColor; }
     QUrl getAudio() { return audioFile; }
-    void setAudio(QUrl audioFile_) { audioFile = audioFile_; }
+    void setAudio(QUrl audioFile_) { audioFile = audioFile_; setToolTip(audioFile.fileName());}
     int getRating() { return rating; }
     void setRating(int rating_) {rating = rating_; }
     QRectF boundingRect() const Q_DECL_OVERRIDE;

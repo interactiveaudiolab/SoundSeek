@@ -88,11 +88,15 @@ public:
 
     void playAudio(QUrl pathToAudio);
     void searchByPath(QUrl searchPath = QUrl());
+
+signals:
+    void playerStateChanged(bool isPlaying);
+
+public slots:
     void toggleAudio();
 
 private slots:
     void setOutputLocation(QUrl path);
-    void togglePause();
     void toggleRecord();
     void setSearchDirectory();
     void search();
@@ -102,6 +106,7 @@ private slots:
     void stopAudio();
     void playLastAudio();
 
+    void onPlayerStateChanged(QMediaPlayer::State state);
     void updateStatus(QMediaRecorder::Status);
     void onStateChanged(QMediaRecorder::State);
     void updateProgress(qint64 pos);

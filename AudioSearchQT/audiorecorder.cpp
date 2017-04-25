@@ -60,6 +60,7 @@
 #include "audiorecorder.h"
 #include "utils.h"
 #include "audioreader.h"
+#include "audiothumbnail.h"
 
 #include "ui_audiorecorder.h"
 
@@ -79,18 +80,6 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
     if (!tmp.exists())
        tmp.mkpath(".");
 
-    ui->waveform->yAxis->setVisible(false);
-    ui->waveform->xAxis->setVisible(false);
-//    ui->waveform->xAxis->setTicks(false);
-//    ui->waveform->yAxis->setTicks(false);
-    ui->waveform->xAxis->setPadding(0);
-    ui->waveform->yAxis->setPadding(0);
-    ui->waveform->addGraph();
-    ui->waveform->graph(0)->setAntialiased(true);
-    ui->waveform->setContentsMargins(0,0,0,0);
-    ui->waveform->yAxis->setRange(-1,1);
-    ui->waveform->adjustSize();
-//    ui->waveform->layout()->setMargin(5);
 
     graph.setAudioParent(this);
     audioRecorder = new QAudioRecorder(this);
@@ -116,6 +105,9 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
 //    ui->topResults->setEnabled(false);
 //    ui->ResultsLabel->setEnabled(false);
 
+    connect(this, SIGNAL(playerStateChanged(bool)), ui->waveform, SLOT(setIsPlaying(bool)));
+    connect(ui->waveform, SIGNAL(playButtonClicked()), this, SLOT(toggleAudio()));
+    connect(&mediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(onPlayerStateChanged(QMediaPlayer::State)));
     connect(audioRecorder, SIGNAL(durationChanged(qint64)), this,
             SLOT(updateProgress(qint64)));
     connect(audioRecorder, SIGNAL(statusChanged(QMediaRecorder::Status)), this,
@@ -124,6 +116,7 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
             this, SLOT(onStateChanged(QMediaRecorder::State)));
     connect(audioRecorder, SIGNAL(error(QMediaRecorder::Error)), this,
             SLOT(displayErrorMessage()));
+
 }
 
 AudioRecorder::~AudioRecorder()
@@ -226,18 +219,12 @@ void AudioRecorder::toggleRecord()
         queryRecorded = true;
 //        ui->searchButton->setEnabled(true);
         ui->playQueryButton->setEnabled(true);
+        ui->waveform->setAudio(queryPath);
+        mediaPlayer.setMedia(queryPath);
         graph.clear();
         graph.addNode(nullptr, queryPath, 0);
         searchByPath(queryPath);
     }
-}
-
-void AudioRecorder::togglePause()
-{
-    if (audioRecorder->state() != QMediaRecorder::PausedState)
-        audioRecorder->pause();
-    else
-        audioRecorder->record();
 }
 
 // for finding neighbors of the initial query
@@ -346,17 +333,7 @@ void AudioRecorder::displayErrorMessage()
 void AudioRecorder::playAudio(QUrl pathToAudio)
 {
     if (mediaPlayer.media().canonicalUrl() != pathToAudio) {
-        vector<Real> buffer;
-        AudioReader::read_audio(pathToAudio.toString().toStdString(), buffer);
-        wav_x.resize(buffer.size());
-        wav_y.resize(buffer.size());
-
-        for (int i = 0; i < buffer.size(); ++i)
-            wav_y[i] = buffer[i];
-        iota(wav_x.begin(), wav_x.end(), 0);
-        ui->waveform->graph(0)->setData(wav_x, wav_y);
-        ui->waveform->xAxis->setRange(0, wav_x.last());
-        ui->waveform->replot();
+        ui->waveform->setAudio(pathToAudio);
     }
     if (mediaPlayer.state() == QMediaPlayer::PlayingState || mediaPlayer.media().canonicalUrl() == pathToAudio)
         mediaPlayer.stop();
@@ -365,8 +342,7 @@ void AudioRecorder::playAudio(QUrl pathToAudio)
     mediaPlayer.setVolume(100);
 
     mediaPlayer.play();
-
-    ui->waveformLabel->setText(mediaPlayer.media().canonicalUrl().fileName());
+    emit playerStateChanged(true);
 }
 
 void AudioRecorder::playLastAudio()
@@ -374,12 +350,15 @@ void AudioRecorder::playLastAudio()
     mediaPlayer.setVolume(100);
 
     mediaPlayer.play();
+    emit playerStateChanged(true);
 }
 
 void AudioRecorder::stopAudio()
 {
     mediaPlayer.stop();
     //ui->statusbar->clearMessage();
+    emit playerStateChanged(false);
+
 }
 
 void AudioRecorder::toggleAudio()
@@ -388,6 +367,8 @@ void AudioRecorder::toggleAudio()
         mediaPlayer.stop();
     else
         mediaPlayer.play();
+
+    emit playerStateChanged(mediaPlayer.state() == QMediaPlayer::PlayingState);
 }
 
 void AudioRecorder::keyPressEvent(QKeyEvent *event)
@@ -400,4 +381,9 @@ void AudioRecorder::keyPressEvent(QKeyEvent *event)
     default:
         break;
     }
+}
+
+void AudioRecorder::onPlayerStateChanged(QMediaPlayer::State state)
+{
+    emit playerStateChanged(state == QMediaPlayer::PlayingState);
 }
