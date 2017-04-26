@@ -49,13 +49,68 @@ SOURCES = \
 FORMS += audiorecorder.ui \
     audiothumbnail.ui
 
-target.path = /Applications/
+target.path = /Applications/SoundSeek
 INSTALLS += target
 
 QT+=widgets printsupport
 
 QMAKE_LFLAGS += -F /system/Library/Frameworks/ApplicationServices.framework/Frameworks/ImageIo.framework
 LIBS += -framework CoreFoundation
+
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/release/ -lavcodec
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/debug/ -lavcodec
+else:unix: LIBS += -L$$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/ -lavcodec
+
+INCLUDEPATH += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/include
+DEPENDPATH += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/release/libavcodec.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/debug/libavcodec.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/release/avcodec.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/debug/avcodec.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/libavcodec.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/release/ -lavformat
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/debug/ -lavformat
+else:unix: LIBS += -L$$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/ -lavformat
+
+INCLUDEPATH += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/include
+DEPENDPATH += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/release/libavformat.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/debug/libavformat.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/release/avformat.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/debug/avformat.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/libavformat.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/release/ -lavutil
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/debug/ -lavutil
+else:unix: LIBS += -L$$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/ -lavutil
+
+INCLUDEPATH += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/include
+DEPENDPATH += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/release/libavutil.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/debug/libavutil.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/release/avutil.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/debug/avutil.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/libavutil.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/release/ -lavresample
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/debug/ -lavresample
+else:unix: LIBS += -L$$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/ -lavresample
+
+INCLUDEPATH += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/include
+DEPENDPATH += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/release/libavresample.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/debug/libavresample.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/release/avresample.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/debug/avresample.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../../../../../usr/local/Cellar/ffmpeg/3.2.4/lib/libavresample.a
+
 
 # aquila
 
@@ -144,4 +199,3 @@ DEPENDPATH += $$PWD/../../../../../usr/local/Cellar/essentia/2.1_beta3/include
 RESOURCES += \
     images.qrc
 
-DISTFILES +=
