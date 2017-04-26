@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = /Applications/SoundSeek/SoundSeek
+TARGET = SoundSeek
 
 QT += multimedia core
 
