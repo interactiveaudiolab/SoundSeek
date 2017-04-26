@@ -265,13 +265,16 @@ void AudioRecorder::searchByPath(QUrl searchPath)
 
 void AudioRecorder::setSearchDirectory()
 {
-    QUrl dirName = QFileDialog::getExistingDirectoryUrl(0, "Open a Folder of Audio", QUrl::fromLocalFile("/Applications/SoundSeek/audio/"), QFileDialog::ShowDirsOnly);
-    searchEngine.addDirectory(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()).toStdString(), true);
-    //sleep(.01);
+    try {
+        QUrl dirName = QFileDialog::getExistingDirectoryUrl(0, "Open a Folder of Audio", QUrl::fromLocalFile("/Applications/SoundSeek/audio/"), QFileDialog::ShowDirsOnly);
+        searchEngine.addDirectory(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()).toStdString(), true);
+        //sleep(.01);
 
-    searchEngine.calcAllDistances();
-    ui->searchDirLabel->setText(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()));
-    ui->recordButton->setEnabled(true);
+        searchEngine.calcAllDistances();
+        ui->searchDirLabel->setText(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()));
+        ui->recordButton->setEnabled(true);
+    }
+    catch(...) {}
 }
 
 void AudioRecorder::resultClicked(){
