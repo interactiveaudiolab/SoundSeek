@@ -46,33 +46,35 @@
            <number>0</number>
           </property>
           <item>
+           <widget class="QLabel" name="label_2">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Select a folder of audio files:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <layout class="QHBoxLayout" name="searchDirLayout">
-            <item>
-             <widget class="QLabel" name="label_2">
-              <property name="maximumSize">
-               <size>
-                <width>60</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font-weight: bold;</string>
-              </property>
-              <property name="text">
-               <string>Folder:</string>
-              </property>
-             </widget>
-            </item>
             <item>
              <widget class="QLabel" name="searchDirLabel">
               <property name="maximumSize">
                <size>
-                <width>210</width>
+                <width>16777215</width>
                 <height>16777215</height>
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true"/>
+               <string notr="true"> color: rgb(140,140,140); </string>
               </property>
               <property name="text">
                <string>None</string>
@@ -102,6 +104,27 @@
              </widget>
             </item>
            </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Record a query:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+            </property>
+           </widget>
           </item>
           <item>
            <layout class="QGridLayout" name="recordPlayLayout">
@@ -239,8 +262,8 @@
    <slot>toggleRecord()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>209</x>
-     <y>94</y>
+     <x>241</x>
+     <y>284</y>
     </hint>
     <hint type="destinationlabel">
      <x>113</x>
@@ -255,8 +278,8 @@
    <slot>setSearchDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>453</x>
-     <y>75</y>
+     <x>449</x>
+     <y>123</y>
     </hint>
     <hint type="destinationlabel">
      <x>289</x>
@@ -271,8 +294,8 @@
    <slot>playQuery()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>481</x>
-     <y>116</y>
+     <x>456</x>
+     <y>284</y>
     </hint>
     <hint type="destinationlabel">
      <x>417</x>
