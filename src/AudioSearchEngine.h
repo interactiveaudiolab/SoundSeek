@@ -54,6 +54,7 @@ public:
     {
         featureWeights.resize (AudioFeatures::num_features, 1);
         load_distances ();
+        newSoundsAdded = false;
     }
 
     ~AudioSearchEngine ()
@@ -116,6 +117,7 @@ public:
                 if (FileUtils::existsAsAudioFile (it->path ())) addFile (it->path ());
             }
         }
+        newSoundsAdded = true;
 
         // resize ();  // resize once at end rather than once for every file added
     }
@@ -287,6 +289,7 @@ private:
     // multi_array<vector<double>, 2> distances;
     map<pair<string, string>, vector<double>> distances;
     vector<double> featureWeights;
+    bool newSoundsAdded;
 
     /**
      *  Resize the distance matrix to match the number of sounds
@@ -331,6 +334,8 @@ private:
 
     void save_distances ()
     {
+        if (!newSoundsAdded)
+            return;
         try
         {
             path cache_dir (string (getenv ("HOME")) + string (DISTANCE_CACHE_PATH));
