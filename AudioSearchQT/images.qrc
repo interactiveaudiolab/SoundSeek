@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/images">
         <file>img/Very Basic Audio file.png</file>
-        <file>img/play.svg</file>
-        <file>img/stop.svg</file>
+        <file>img/play.png</file>
+        <file>img/stop.png</file>
     </qresource>
 </RCC>

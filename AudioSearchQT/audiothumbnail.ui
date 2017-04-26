@@ -248,9 +248,9 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="images.qrc">
-         <normaloff>:/images/img/play.svg</normaloff>
-         <normalon>:/images/img/stop.svg</normalon>:/images/img/play.svg</iconset>
+        <iconset theme="Hybrid" resource="images.qrc">
+         <normaloff>:/images/img/play.png</normaloff>
+         <normalon>:/images/img/stop.png</normalon>:/images/img/play.png</iconset>
        </property>
        <property name="iconSize">
         <size>
