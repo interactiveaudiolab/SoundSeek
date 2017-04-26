@@ -65,7 +65,7 @@
 #include "libs/qcustomplot/qcustomplot.h"
 
 #define QUERY_DIR "/tmp/SoundSeek/"
-#define QUERY_PREFIX "soundseek_query_"
+#define QUERY_PREFIX "query_"
 
 
 QT_BEGIN_NAMESPACE
