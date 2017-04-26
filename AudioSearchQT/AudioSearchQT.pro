@@ -1,9 +1,10 @@
 TEMPLATE = app
-TARGET = AudioSearchQT
+TARGET = /Applications/SoundSeek/SoundSeek
 
 QT += multimedia core
 
 CONFIG += static
+
 QMAKE_RPATHDIR += @executable_path/../Frameworks
 QMAKE_RPATHDIR += @executable_path/lib
 
