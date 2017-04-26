@@ -252,8 +252,10 @@ void AudioRecorder::searchByPath(QUrl searchPath)
     auto* parent = graph.findNode(searchPath);
     if (!parent)
         return;
-    foreach(path p, searchEngine.getNearestWeighted(QUrlToPath(searchPath), 7))
+    foreach(path p, searchEngine.getNearestWeighted(QUrlToPath(searchPath), 10))
     {
+        if (QString::fromStdString(p.string()).contains(QUERY_PREFIX))
+            continue;
         cout << p << endl;
         graph.addNode (parent, pathToUrl(p.string()));
     }
