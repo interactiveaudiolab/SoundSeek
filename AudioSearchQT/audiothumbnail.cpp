@@ -60,8 +60,6 @@ void AudioThumbnail::setAudio(QUrl pathToAudio)
     ui->fileIconLabel->setVisible(true);
     ui->filepathLabel->setVisible(true);
     ui->waveform->setVisible(true);
-    ui->filepathLabel->setStyleSheet("QLabel { color : rgb(230,230,230); }");
-
 }
 
 void AudioThumbnail::readAudio(QUrl pathToAudio){

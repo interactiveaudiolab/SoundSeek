@@ -118,6 +118,9 @@
            <pointsize>12</pointsize>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(140,140,140); </string>
+         </property>
          <property name="text">
           <string>file path</string>
          </property>
