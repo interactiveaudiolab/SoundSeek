@@ -153,6 +153,15 @@ public:
     }
 
     /**
+     *  Delete any cached distance values, recalculate all.
+     */
+    void reCalcAllDistances ()
+    {
+        distances.clear ();
+        calcAllDistances ();
+    }
+
+    /**
      *  Get vector of distances by feature between two sounds
      *
      *  @param a Path to an audio file
@@ -164,8 +173,7 @@ public:
     {
         if (distCalculated (a, b)) return distances[a, b];
 
-        auto dists = Distance::distance (AudioObject (a), AudioObject (b), DEFAULT_DTW_CONSTRAINT,
-                                         thread::hardware_concurrency ());
+        auto dists = Distance::distance (AudioObject (a), AudioObject (b), thread::hardware_concurrency (), true);
         distances[a, b] = dists;
         distances[a, b] = dists;
 
@@ -182,7 +190,6 @@ public:
      */
     double getWeightedDistance (path a, path b)
     {
-        DBG ("getWeightedDistance");
         auto dists = getFeatureDistances (a, b);
         return Distance::weightedPNorm (dists, featureWeights);
         // return Distance::weightedPNorm<double> (dists, featureWeights);
@@ -197,28 +204,27 @@ public:
      */
     vector<path> getNearestByFeature (path query)
     {
-        DBG ("getNearestByFeature");
         addFile (query);
 
         // auto query_id = pathToID (query);
 
         vector<path> result (AudioFeatures::num_features);
         clock_t start = clock ();
-        for (int i = 0; i < AudioFeatures::num_features; ++i)
+        for (int feature = 0; feature < AudioFeatures::num_features; ++feature)
         {
-            auto min_dist = numeric_limits<double>::max ();
-            auto min_sound = query;
+            double min_dist = numeric_limits<double>::max ();
+            path min_sound;
 
-            for (int j = 0; j < sounds.size (); ++j)
+            for (int sound = 0; sound < sounds.size (); ++sound)
             {
-                auto dist = getFeatureDistances (query, sounds[j])[i];
-                if (sounds[j] != query && dist > 0 && dist < min_dist)
+                auto dist = getFeatureDistances (query, sounds[sound])[feature];
+                if (sounds[sound] != query && dist > 0 && dist < min_dist)
                 {
                     min_dist = dist;
-                    min_sound = sounds[j];
+                    min_sound = sounds[sound];
                 }
             }
-            result[i] = min_sound;
+            result[feature] = min_sound;
         }
         double duration = (clock () - start) / (double) CLOCKS_PER_SEC;
         cerr << "Searched " << sounds.size () << " sounds in " << duration << " seconds" << endl;
@@ -258,9 +264,12 @@ public:
 
         indices.pop_back ();
 
-        vector<path> results (num_results);
+        vector<path> results;
 
-        for (int i = 0; i < num_results; ++i) results[i] = sounds[indices[i]];
+        for (int i = 0; i < num_results; ++i)
+        {
+            if (sounds[indices[i]] != query) results.push_back (sounds[indices[i]]);
+        }
         double duration = (clock () - start) / (double) CLOCKS_PER_SEC;
         cerr << "Searched " << sounds.size () << " sounds in " << duration << " seconds" << endl;
 
@@ -334,8 +343,7 @@ private:
 
     void save_distances ()
     {
-        if (!newSoundsAdded)
-            return;
+        if (!newSoundsAdded) return;
         try
         {
             path cache_dir (string (getenv ("HOME")) + string (DISTANCE_CACHE_PATH));
