@@ -63,29 +63,6 @@ void AudioThumbnail::setAudio(QUrl pathToAudio)
 }
 
 void AudioThumbnail::readAudio(QUrl pathToAudio){
-//    essentia::init();
-//    AlgorithmFactory& factory = standard::AlgorithmFactory::instance();
-//    Algorithm* audio = factory.create("EasyLoader", "filename", pathToAudio.toString().toStdString(), "sampleRate", SAMPLE_RATE, "replayGain", 0);
-
-//    vector<Real> buffer;
-//    audio->output("audio").set(buffer);
-
-//    audio->compute();
-//    delete audio;
-//    essentia::shutdown();
-
-//    x.resize(buffer.size());
-//    y.resize(buffer.size());
-
-//    for (int i = 0; i < buffer.size(); ++i)
-//        y[i] = buffer[i];
-//    iota(x.begin(), y.end(), 0);
-//    ui->waveform->graph(0)->setData(x, y);
-//    ui->waveform->xAxis->setRange(0, x.last());
-//    ui->waveform->replot();
-//}
-
-
     vector<Real> buffer;
 
     AudioReader::read_audio(pathToAudio.toString().toStdString(), buffer);
