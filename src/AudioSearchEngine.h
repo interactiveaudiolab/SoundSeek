@@ -82,7 +82,7 @@ public:
     void addFile (path file)  //,  bool resize_matrix = true)
     {
         if (!FileUtils::existsAsAudioFile (file))
-            throw std::runtime_error (file.string () + " is not a valid audio file.");
+            throw invalid_argument (file.string () + " is not a valid audio file.");
 
         // if audio file exists, is an audio file, and is not already in database
         if (!hasSound (file))

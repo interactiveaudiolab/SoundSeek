@@ -91,9 +91,7 @@ double Distance::DTW (const vector<double> &s, const vector<double> &t)
 
 double Distance::weightedPNorm (const vector<double> &dists, const vector<double> &weights, int p)
 {
-    DBG ("weights.size: " << weights.size () << " dists.size: " << dists.size ()
-                          << " num_features: " << AudioFeatures::num_features);
-    assert (weights.size () == dists.size ());
+    if (weights.size () != dists.size ()) throw invalid_argument ("length of weights and dists must be equal");
 
     double sum = 0;
     for (int i = 0; i < dists.size (); ++i)
