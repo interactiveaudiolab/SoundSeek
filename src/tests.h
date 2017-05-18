@@ -10,53 +10,77 @@
 
 #include "Distance.h"
 
-namespace Test {
-    template<typename T1, typename T2>
-    void assert_eq (T1 a, T2 b) {
-        if (a != b) cerr << "Test failed: " << a << " != " << b << endl;
-    }
+namespace Test
+{
+template <typename T1, typename T2>
+void assert_eq (T1 a, T2 b, std::string msg = "")
+{
+    if (a != b) cerr << "Test failed: " << msg << "\n->\t" << a << " != " << b << endl << endl;
+}
 
-    void test_dtw () {
-        vector<double> a = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-        vector<double> b = {5, 7, 2, 4, 5};
-        double expected = 20.;
-        assert_eq (Distance::DTW (a, b), expected);
-        assert_eq (Distance::DTW (a, b, 1), expected);
-        assert_eq (Distance::DTW (a, b, .5), expected);
-        assert_eq (Distance::DTW (a, b, .25), expected);
-        assert_eq (Distance::DTW (a, b, .1), expected);
-    }
+void test_dtw ()
+{
+    vector<double> a = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    vector<double> b = {5, 7, 2, 4, 5};
+    double expected = 20.;
+    assert_eq (Distance::DTW (a, b), expected);
+    assert_eq (Distance::DTW (a, b, 1), expected);
+    assert_eq (Distance::DTW (a, b, .5), expected);
+    assert_eq (Distance::DTW (a, b, .25), expected);
+    assert_eq (Distance::DTW (a, b, .1), expected);
+}
 
-    void test_euclidean () {
-        vector<double> dists = {2., 4., 4.};
-        vector<double> weights = {1., 1., 1.};
-        assert_eq (Distance::weightedPNorm (dists, weights), 6);
+void big_dtw ()
+{
+    vector<double> a = {1, 3, 5, 6, 2, 5, 3, 7, 8, 2, 4, 6, 7, 2, 7, 8, 4, 9, 2, 1, 8, 3, 5, 1, 5, 0, 4, 1};
+    vector<double> b = {2, 1, 7, 7, 8, 1, 4, 5, 7, 2, 7, 8, 9, 5, 5, 2, 4, 6, 2, 1, 8, 3, 5, 1, 5, 1, 4, 2};
+    double expected = 28;
+    assert_eq (Distance::DTW (a, b), expected);
+    assert_eq (Distance::DTW (a, b, 1), expected);
+    assert_eq (Distance::DTW (a, b, .5), expected);
+    assert_eq (Distance::DTW (a, b, .25), expected);
+    assert_eq (Distance::DTW (a, b, .1), expected);
+}
 
-        weights = {1., 0., 0.};
-        assert_eq (Distance::weightedPNorm (dists, weights), 2);
-    }
+void test_euclidean ()
+{
+    vector<double> dists = {2., 4., 4.};
+    vector<double> weights = {1., 1., 1.};
+    assert_eq (Distance::weightedPNorm (dists, weights), 6);
 
-    void test_manhattan () {
-        vector<double> dists = {2., 4., 4.};
-        vector<double> weights = {1., 1., 1.};
-        assert_eq (Distance::weightedPNorm (dists, weights, 1), 10);
+    weights = {1., 0., 0.};
+    assert_eq (Distance::weightedPNorm (dists, weights), 2);
+}
 
-        weights = {1., 0., 0.};
-        assert_eq (Distance::weightedPNorm (dists, weights, 1), 2);
-    }
+void test_manhattan ()
+{
+    vector<double> dists = {2., 4., 4.};
+    vector<double> weights = {1., 1., 1.};
+    assert_eq (Distance::weightedPNorm (dists, weights, 1), 10);
 
-    void test_local () {
-        vector<double> a = {14., 13.5, 12.};
-        vector<double> b = {14.1, 8.5, 11.};
-        auto result = Distance::smith_waterman (a, b);
-        
-    }
+    weights = {1., 0., 0.};
+    assert_eq (Distance::weightedPNorm (dists, weights, 1), 2);
+}
 
-    void run_tests () {
-        test_dtw ();
-        test_euclidean ();
-        test_local ();
-    }
+void self_dtw ()
+{
+    vector<double> a = {1, 2, 3, 4, 5};
+    assert_eq (Distance::DTW (a, a), 0., "DTW: self v. self = 0");
+}
+
+void self_local ()
+{
+    vector<double> a = {1, 2, 3, 4, 5};
+    assert_eq (Distance::smithWaterman (a, a), 0., "local alignment: self v. self = 0");
+}
+
+void run_tests ()
+{
+    test_dtw ();
+    test_euclidean ();
+    self_dtw ();
+    self_local ();
+}
 }
 
 #endif /* tests_h */
