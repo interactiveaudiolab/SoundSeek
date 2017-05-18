@@ -24,7 +24,7 @@ vector<double> Distance::distance (const AudioObject &a, const AudioObject &b, i
         {
             results.emplace_back (
                 thread_pool.enqueue ([](vector<double> &s, vector<double> &t, int w,
-                                        int j) { return pair<int, double> (j, Distance::smith_waterman (s, t)); },
+                                        int j) { return pair<int, double> (j, Distance::smithWaterman (s, t)); },
                                      a_timeseries, b_timeseries, constraint, j));
         }
         else
@@ -44,7 +44,6 @@ vector<double> Distance::distance (const AudioObject &a, const AudioObject &b, i
         result.wait ();
         auto r = result.get ();
         distances[r.first] = log (r.second);
-
     }
     return distances;
 }
@@ -69,7 +68,7 @@ double Distance::DTW (const vector<double> &s, const vector<double> &t, int w)
         for (int j = max (1, i - w); j <= min (m, i + w); ++j)
         {
             cost = abs (s[i - 1] - t[j - 1]);
-            dtw (i, j) = cost + min  (min (dtw (i - 1, j), dtw (i, j - 1)), dtw (i - 1, j - 1));
+            dtw (i, j) = cost + min (min (dtw (i - 1, j), dtw (i, j - 1)), dtw (i - 1, j - 1));
         }
     }
 
@@ -114,33 +113,37 @@ double Distance::weightedPNorm (const vector<double> &dists, const vector<double
 }
 
 template <typename T>
-bool within_tolerance(T a, T b, double tolerance) {
+bool within_tolerance (T a, T b, double tolerance)
+{
     double lower = a * (1 - tolerance);
     double upper = a * (1 + tolerance);
 
     return b >= lower && b <= upper;
 }
 
-double Distance::smith_waterman (const vector<double> &s, const vector<double> &t, double tolerance, vector<double> penalties)
+double Distance::smithWaterman (const vector<double> &s, const vector<double> &t, double tolerance,
+        vector<double> penalties)
 {
-    MatrixXd scoring (s.size (), t.size ());
-    for (int i = 0; i < s.size (); ++i) scoring (i, 0) = 0;
-    for (int i = 0; i < t.size (); ++i) scoring (0, i) = 0;
+    MatrixXd scoring (s.size () + 1, t.size () + 1);
+    for (int i = 0; i < s.size () + 1; ++i) scoring (i, 0) = 0;
+    for (int i = 0; i < t.size () + 1; ++i) scoring (0, i) = 0;
 
     double best = 0;
 
-    for (int i = 1; i < s.size (); ++i)
+    for (int i = 1; i < s.size () + 1; ++i)
     {
-        for (int j = 1; j < t.size (); ++j)
+        for (int j = 1; j < t.size () + 1; ++j)
         {
-            double match_mismatch = within_tolerance (s[i], t[j], tolerance) ? penalties[0] : penalties[1];
-            scoring (i, j) = std::max (std::max (scoring (i, j - 1) + penalties[2], scoring (i - 1, j) + penalties[1]),
-                                       std::max (scoring (i - 1, j - 1) + match_mismatch, 0.));
+            double match_mismatch = within_tolerance (s[i - 1], t[j - 1], tolerance) ? penalties[0] : penalties[1];
+
+            double up = scoring (i - 1, j) + penalties[1];
+            double left = scoring (i, j - 1) + penalties[2];
+            double diag = scoring (i - 1, j - 1) + match_mismatch;
+
+            scoring (i, j) = std::max (std::max (up, left), std::max (diag, 0.));
 
             if (scoring (i, j) >= best) best = scoring (i, j);
         }
     }
-    return best;
+    return -1 * best;  // negative to make it a distance rather than similarity score
 }
-
-

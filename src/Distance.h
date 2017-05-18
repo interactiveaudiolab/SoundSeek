@@ -13,6 +13,7 @@
 #include "AudioFeatures.h"
 #include "libs/ThreadPool.h"
 #include "AudioObject.h"
+#include "Config.h"
 
 using namespace std;
 using namespace Eigen;
@@ -54,7 +55,6 @@ double DTW (const vector<double> &s, const vector<double> &t, int w);
  */
 double DTW (const vector<double> &s, const vector<double> &t);
 
-
 /**
  *  Calculate the score of the best subsequence alignment between two sequences
  *
@@ -64,7 +64,8 @@ double DTW (const vector<double> &s, const vector<double> &t);
  *
  *  @return A scoring of the best subsequence alignment
  */
-double smith_waterman (const vector<double> &s, const vector<double> &t, double tolerance = 0.05, vector<double> costs = {2, -1, -2});
+double smithWaterman (const vector<double> &s, const vector<double> &t, double tolerance = 0.05,
+            vector<double> costs = {2, -1, -2});
 
 double weightedPNorm (const vector<double> &dists, const vector<double> &weights, int p = 2);
 }
