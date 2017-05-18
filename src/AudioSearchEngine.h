@@ -12,7 +12,8 @@
 #include "Common.h"
 #include "FileUtils.h"
 #include "Distance.h"
-//#include "DistanceMatrix.h"
+#include "libs/json.hpp"
+#include "Config.h"
 
 #include <boost/progress.hpp>
 #include <boost/filesystem.hpp>
@@ -29,11 +30,11 @@
 #include <fstream>
 
 #define DEFAULT_DTW_CONSTRAINT .1
-#define DISTANCE_CACHE_PATH "/Library/Application\ Support/SoundSeek/distance.cache"
 
 using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
+using nlohmann::json;
 
 static pair<string, string> operator, (string path1, string path2)
 {
@@ -52,14 +53,27 @@ class AudioSearchEngine
 public:
     AudioSearchEngine ()
     {
-        featureWeights.resize (AudioFeatures::num_features, 1);
-        load_distances ();
-        newSoundsAdded = false;
+        feature_weights.resize (AudioFeatures::num_features, 1);
+        loadDistances ();
+
+        try
+        {
+            local_align = Config::load ()["localAlign"];
+        }
+        catch (...)
+        {
+            local_align = DEFAULT_LOCAL;
+        }
+
+        new_sounds_added = false;
     }
 
     ~AudioSearchEngine ()
     {
-        save_distances ();
+        json config = Config::load ();
+        config["localAlign"] = local_align;
+        Config::save (config);
+        saveDistances ();
     }
 
     /**
@@ -117,9 +131,7 @@ public:
                 if (FileUtils::existsAsAudioFile (it->path ())) addFile (it->path ());
             }
         }
-        newSoundsAdded = true;
-
-        // resize ();  // resize once at end rather than once for every file added
+        new_sounds_added = true;
     }
 
     /**
@@ -149,7 +161,7 @@ public:
         }
         double duration = (clock () - start) / (double) CLOCKS_PER_SEC;
         cerr << "Precalculated distances for " << sounds.size () << " sounds in " << duration << " seconds" << endl;
-        save_distances ();
+        saveDistances ();
     }
 
     /**
@@ -173,7 +185,7 @@ public:
     {
         if (distCalculated (a, b)) return distances[a, b];
 
-        auto dists = Distance::distance (AudioObject (a), AudioObject (b), thread::hardware_concurrency (), true);
+        auto dists = Distance::distance (AudioObject (a), AudioObject (b), thread::hardware_concurrency (), local_align);
         distances[a, b] = dists;
         distances[a, b] = dists;
 
@@ -191,7 +203,7 @@ public:
     double getWeightedDistance (path a, path b)
     {
         auto dists = getFeatureDistances (a, b);
-        return Distance::weightedPNorm (dists, featureWeights);
+        return Distance::weightedPNorm (dists, feature_weights);
         // return Distance::weightedPNorm<double> (dists, featureWeights);
     }
 
@@ -289,28 +301,26 @@ public:
         // feature higher
         auto dists = distances[query, likedSound];
         auto nearest_feature_index = min_element (dists.begin (), dists.end ()) - dists.begin ();
-        featureWeights[nearest_feature_index] *= 1.1;
-        cerr << featureWeights << endl;
+        feature_weights[nearest_feature_index] *= 1.1;
+        cerr << feature_weights << endl;
+    }
+
+    void setUseLocalAlign (bool useLocal)
+    {
+        local_align = useLocal;
+    }
+
+    bool getUseLocal ()
+    {
+        return local_align;
     }
 
 private:
     deque<path> sounds;
     // multi_array<vector<double>, 2> distances;
     map<pair<string, string>, vector<double>> distances;
-    vector<double> featureWeights;
-    bool newSoundsAdded;
-
-    /**
-     *  Resize the distance matrix to match the number of sounds
-     */
-    //    void resize ()
-    //    {
-    //        assert (distances.shape ()[0] == distances.shape ()[1]);
-    //        if (distances.shape ()[0] != sounds.size ())
-    //        {
-    //            distances.resize (extents[sounds.size ()][sounds.size ()]);
-    //        }
-    //    }
+    vector<double> feature_weights;
+    bool new_sounds_added, local_align;
 
     /**
      *  Return true if the SearchEngine has already calculated a distance for a pair of sounds
@@ -326,7 +336,7 @@ private:
         return true;
     }
 
-    void print_dists ()
+    void printDists ()
     {
         //        DBG ("distances.shape: " << distances.shape ()[0] << ", " << distances.shape ()[1]);
         //
@@ -341,15 +351,15 @@ private:
         //        }
     }
 
-    void save_distances ()
+    void saveDistances ()
     {
-        if (!newSoundsAdded) return;
+        if (!new_sounds_added) return;
         try
         {
-            path cache_dir (string (getenv ("HOME")) + string (DISTANCE_CACHE_PATH));
+            path cache_dir (string (getenv ("HOME")) + string (APP_SUPPORT) + string (DISTANCE_CACHE_PATH));
             cache_dir = cache_dir.parent_path ();
             if (!is_directory (cache_dir)) create_directory (cache_dir);
-            std::ofstream file (string (getenv ("HOME")) + string (DISTANCE_CACHE_PATH));
+            std::ofstream file (string (getenv ("HOME")) + string (APP_SUPPORT) + string (DISTANCE_CACHE_PATH));
             archive::text_oarchive ar (file);
             boost::serialization::serialize (ar, distances, 1);
             cerr << "Saving distance cache..." << endl;
@@ -360,11 +370,11 @@ private:
         }
     }
 
-    void load_distances ()
+    void loadDistances ()
     {
         try
         {
-            std::ifstream file (string (getenv ("HOME")) + string (DISTANCE_CACHE_PATH));
+            std::ifstream file (string (getenv ("HOME")) + string (APP_SUPPORT) + string (DISTANCE_CACHE_PATH));
             archive::text_iarchive ar (file);
             boost::serialization::serialize (ar, distances, 1);
             cerr << "Loading distance cache..." << endl;
