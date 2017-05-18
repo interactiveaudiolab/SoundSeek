@@ -21,6 +21,10 @@
 
 #include "libs/json.hpp"
 
+#define APP_SUPPORT "/Library/Application\ Support/SoundSeek/"
+#define DISTANCE_CACHE_PATH "distance.cache"
+#define CFG_PATH "soundseek.cfg"
+
 #ifdef DEBUG
 #define DBG(x) cerr << x << endl
 #else
