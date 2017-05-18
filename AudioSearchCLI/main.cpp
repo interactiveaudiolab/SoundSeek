@@ -7,7 +7,8 @@
 #define CLI
 
 #define CATCH_CONFIG_RUNNER
-#include "catch.hpp"
+
+#include "../src/libs/catch.hpp"
 
 #include <stdio.h>
 #include <chrono>
@@ -15,6 +16,7 @@
 //#include "../src/AudioSearchEngine.h"
 #include "../src/FileUtils.h"
 #include "../src/AudioSearchEngine.h"
+#include "../src/tests.h"
 
 #define CACHE_PATH "/Users/michael/InteractiveAudioLab/SoundSeek/caches/distcache.ar"
 
@@ -25,10 +27,10 @@ using namespace std;
 using namespace essentia;
 using nlohmann::json;
 
-int main (int argc, const char* argv[])
+int main (int argc, const char *argv[])
 {
-    int result = Catch::Session ().run (argc, argv);
-    // int result = Catch::Session ().run (argc, argv);
+    //    int result = Catch::Session ().run (argc, argv);
+    Test::run_tests ();
     // DBG (result);
     // Distance::testDTW ();
     // insert code here...
@@ -39,7 +41,7 @@ int main (int argc, const char* argv[])
 
     AudioSearchEngine engine;
     engine.addDirectory (dirPath, true);
-    engine.calcAllDistances ();
+    engine.reCalcAllDistances ();
 
     // engine.addSearchDir (dirPath, true);
     // engine.removeAllAnalysisFiles ();
@@ -50,7 +52,7 @@ int main (int argc, const char* argv[])
     auto results = engine.getNearestWeighted (queryPath);
 
     //    auto topResults = engine.getTopResults ();
-    //    auto resultsByFeature = engine.getNearestResultByFeature ();
+    auto resultsByFeature = engine.getNearestByFeature (queryPath);
     // engine.addSearchDir (filePath, true);
     auto end = Clock::now ();
 
@@ -59,20 +61,36 @@ int main (int argc, const char* argv[])
     cout << "Top results: " << endl;
     for (int i = 0; i < std::min (10, (int) results.size ()); ++i)
     {
-        cout << "+\t" << results[i] << endl;
+        try
+        {
+            cout << "+\t" << results[i] << endl;
+            cout << " " << engine.getWeightedDistance (queryPath, results[i]) << endl;
+        }
+        catch (...)
+        {
+        }
     }
-    //    cout << "\nBest results by feature:" << endl;
-    //    for (int i = 0; i < AudioFeatures::num_features; ++i)
-    //    {
-    //        cout << "+ " << AudioFeatures::getAllFeatures ()[i] << " \t" << resultsByFeature[i].toString () << endl;
-    //    }
+
+    cout << "\nBest results by feature:" << endl;
+    for (int i = 0; i < AudioFeatures::num_features; ++i)
+    {
+        try
+        {
+            cout << "+ " << AudioFeatures::getAllFeatures ()[i] << " \t" << resultsByFeature[i].string () << endl;
+            cout << " " << engine.getFeatureDistances (queryPath, resultsByFeature[i])[i] << endl;
+        }
+        catch (...)
+        {
+        }
+    }
     cout << "########################################" << endl;
 
     cout << "\n\nSearched in: " << std::chrono::duration_cast<std::chrono::milliseconds> (end - start).count () / 1000.f
          << "s" << endl;
 
-    std::system (string ("open " + queryPath.string ()).c_str ());
-
-    std::system (string ("open " + results[0].string ()).c_str ());
+    //    std::system (string ("open " + queryPath.string ()).c_str ());
+    //
+    //    std::system (string ("open " + results[0].string ()).c_str ());
+    //    return (result < 0xff ? result : 0xff);
     return 0;
 }
