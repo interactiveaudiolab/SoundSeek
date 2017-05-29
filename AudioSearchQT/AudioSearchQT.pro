@@ -16,12 +16,11 @@ HEADERS = \
     ../src/AudioFeatures.h \
     ../src/AudioObject.h \
     ../src/AudioSearchEngine.h \
-    ../src/catch.hpp \
+    ../src/libs/catch.hpp \
     ../src/Common.h \
     ../src/Distance.h \
     ../src/FeatureExtractor.h \
     ../src/FileUtils.h \
-    ../src/ThreadPool.h \
     edge.h \
     graphwidget.h \
     node.h \
@@ -36,14 +35,12 @@ HEADERS = \
 SOURCES = \
     main.cpp \
     audiorecorder.cpp \
-    ../src/AudioSearchEngine.cpp \
     ../src/FeatureExtractor.cpp \
     node.cpp \
     graphwidget.cpp \
     edge.cpp \
     ../src/Distance.cpp \
     common-utils.cpp \
-    ../src/FileUtils.cpp \
     libs/qcustomplot/qcustomplot.cpp \
     audiothumbnail.cpp
 
