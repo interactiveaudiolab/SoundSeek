@@ -283,7 +283,6 @@ void Node::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 //    }
 }
 
-
 void Node::expand()
 {
     if (expanded)

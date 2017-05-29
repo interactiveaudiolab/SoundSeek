@@ -5,14 +5,16 @@
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "26FACDE81BC30FD170C0E90874C9E7C4B41AC534" : 9223372036854775807,
+    "4E051CC284F7937C9005FC5F7714D6BC6FCCC151" : 0,
     "97FB40C0DBC2D6928D970942B3DFD8DA8DEF669A" : 9223372036854775807,
-    "4E051CC284F7937C9005FC5F7714D6BC6FCCC151" : 0
+    "4CD8186CE66A0AD46BD21DF2E9F43E65780546D2" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "1CACA17D-3694-414A-B17E-2F1D1C6FF146",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "26FACDE81BC30FD170C0E90874C9E7C4B41AC534" : "AudioSearchCPP\/AudioSearchCLI\/AudioSearchCLI\/libs\/FastDTW-x\/",
+    "4E051CC284F7937C9005FC5F7714D6BC6FCCC151" : "SoundSeek\/",
     "97FB40C0DBC2D6928D970942B3DFD8DA8DEF669A" : "AudioSearchCPP\/",
-    "4E051CC284F7937C9005FC5F7714D6BC6FCCC151" : "SoundSeek\/"
+    "4CD8186CE66A0AD46BD21DF2E9F43E65780546D2" : "caffe\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "AudioSearchCLI",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -22,6 +24,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/dblalock\/FastDTW-x",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "26FACDE81BC30FD170C0E90874C9E7C4B41AC534"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "git:\/\/github.com\/BVLC\/caffe.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "4CD8186CE66A0AD46BD21DF2E9F43E65780546D2"
     },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/interactiveaudiolab\/SoundSeek",

@@ -63,7 +63,6 @@
 
 #include <QKeyEvent>
 
-//! [0]
 GraphWidget::GraphWidget(QWidget *parent)
     : QGraphicsView(parent), timerId(0)
 {
@@ -77,12 +76,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
     setMinimumSize(200, 200);
-//! [0]
-
-//! [1]
-
 }
-//! [1]
 
 void GraphWidget::addNode(Node *parent, QUrl audioFile, int rating)
 {
@@ -137,15 +131,12 @@ void GraphWidget::playAudio(QUrl audioFile)
     audioParent->playAudio(audioFile);
 }
 
-//! [2]
 void GraphWidget::itemMoved()
 {
     if (!timerId)
         timerId = startTimer(1000 / 25);
 }
-//! [2]
 
-//! [3]
 void GraphWidget::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
@@ -177,9 +168,7 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
         QGraphicsView::keyPressEvent(event);
     }
 }
-//! [3]
 
-//! [4]
 void GraphWidget::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
@@ -204,26 +193,20 @@ void GraphWidget::timerEvent(QTimerEvent *event)
         timerId = 0;
     }
 }
-//! [4]
 
 #ifndef QT_NO_WHEELEVENT
-//! [5]
 void GraphWidget::wheelEvent(QWheelEvent *event)
 {
     scaleView(pow((double)2, -event->delta() / 240.0));
 }
-//! [5]
 #endif
 
-//! [6]
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {
     Q_UNUSED(rect);
 
 }
-//! [6]
 
-//! [7]
 void GraphWidget::scaleView(qreal scaleFactor)
 {
     qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
@@ -232,7 +215,6 @@ void GraphWidget::scaleView(qreal scaleFactor)
 
     scale(scaleFactor, scaleFactor);
 }
-//! [7]
 
 void GraphWidget::shuffle()
 {

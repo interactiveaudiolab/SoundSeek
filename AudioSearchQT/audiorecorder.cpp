@@ -117,6 +117,7 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
     connect(audioRecorder, SIGNAL(error(QMediaRecorder::Error)), this,
             SLOT(displayErrorMessage()));
 
+    connect(ui->actionUseLocalAlignment, SIGNAL(toggled(bool)), this, SLOT(toggleLocal(bool)));
 }
 
 AudioRecorder::~AudioRecorder()
@@ -391,4 +392,8 @@ void AudioRecorder::keyPressEvent(QKeyEvent *event)
 void AudioRecorder::onPlayerStateChanged(QMediaPlayer::State state)
 {
     emit playerStateChanged(state == QMediaPlayer::PlayingState);
+}
+
+void AudioRecorder::toggleLocal(bool useLocal) {
+    searchEngine.setUseLocalAlign(useLocal);
 }

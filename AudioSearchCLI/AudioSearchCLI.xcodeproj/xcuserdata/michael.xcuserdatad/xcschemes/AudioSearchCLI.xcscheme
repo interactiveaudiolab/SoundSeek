@@ -63,11 +63,11 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "/Users/michael/InteractiveAudioLab/audiosearch/audio_small"
+            argument = "/Users/michael/InteractiveAudioLab/SoundSeek/Testing/test"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "/Users/michael/InteractiveAudioLab/audiosearch/WATER_SPLASH_POUR_CAN_EMPTY_01.wav"
+            argument = "/Users/michael/InteractiveAudioLab/SoundSeek/Testing/query.wav"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

@@ -237,11 +237,42 @@
     </property>
     <addaction name="actionInput_Device"/>
    </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionUseLocalAlignment"/>
+   </widget>
    <addaction name="menuDevices"/>
+   <addaction name="menuSettings"/>
   </widget>
   <action name="actionInput_Device">
    <property name="text">
     <string>Input Device</string>
+   </property>
+  </action>
+  <action name="actionOn">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>On</string>
+   </property>
+  </action>
+  <action name="actionOff">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Off</string>
+   </property>
+  </action>
+  <action name="actionUseLocalAlignment">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Use Local Alignment</string>
    </property>
   </action>
  </widget>

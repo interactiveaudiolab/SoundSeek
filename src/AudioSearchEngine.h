@@ -307,6 +307,7 @@ public:
 
     void setUseLocalAlign (bool useLocal)
     {
+        cerr << "Local: " << useLocal << endl;
         local_align = useLocal;
     }
 

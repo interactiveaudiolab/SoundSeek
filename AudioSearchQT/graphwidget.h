@@ -64,7 +64,6 @@
 class AudioRecorder;
 class Node;
 
-//! [0]
 class GraphWidget : public QGraphicsView
 {
     Q_OBJECT
@@ -102,6 +101,5 @@ private:
     Node *centerNode;
     AudioRecorder* audioParent;
 };
-//! [0]
 
 #endif // GRAPHWIDGET_H

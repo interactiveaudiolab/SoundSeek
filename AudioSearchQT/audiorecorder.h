@@ -94,7 +94,7 @@ signals:
 
 public slots:
     void toggleAudio();
-
+    void toggleLocal(bool useLocal);
 private slots:
     void setOutputLocation(QUrl path);
     void toggleRecord();
