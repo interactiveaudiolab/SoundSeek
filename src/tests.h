@@ -9,6 +9,7 @@
 #define tests_h
 
 #include "Distance.h"
+#include "DeepSimilarity.h"
 
 namespace Test
 {
@@ -74,12 +75,20 @@ void self_local ()
     assert_eq (Distance::smithWaterman (a, a), 0., "local alignment: self v. self = 0");
 }
 
+void test_siamese ()
+{
+    double result = Distance::deepSimilarity (path ("/Users/michael/InteractiveAudioLab/SoundSeek/Testing/query.wav"),
+                                              path ("/Users/michael/InteractiveAudioLab/SoundSeek/Testing/test1.wav"));
+    DBG ("Siamese: " << result);
+}
+
 void run_tests ()
 {
     test_dtw ();
     test_euclidean ();
     self_dtw ();
     self_local ();
+    test_siamese ();
 }
 }
 

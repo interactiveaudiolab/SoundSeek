@@ -14,6 +14,7 @@
 #include "libs/ThreadPool.h"
 #include "AudioObject.h"
 #include "Config.h"
+#include "DeepSimilarity.h"
 
 using namespace std;
 using namespace Eigen;
@@ -65,7 +66,7 @@ double DTW (const vector<double> &s, const vector<double> &t);
  *  @return A scoring of the best subsequence alignment
  */
 double smithWaterman (const vector<double> &s, const vector<double> &t, double tolerance = 0.05,
-            vector<double> costs = {2, -1, -2});
+                      vector<double> costs = {2, -1, -2});
 
 double weightedPNorm (const vector<double> &dists, const vector<double> &weights, int p = 2);
 }
