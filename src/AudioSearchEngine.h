@@ -185,7 +185,8 @@ public:
     {
         if (distCalculated (a, b)) return distances[a, b];
 
-        auto dists = Distance::distance (AudioObject (a), AudioObject (b), thread::hardware_concurrency (), local_align);
+        auto dists =
+            Distance::distance (AudioObject (a), AudioObject (b), thread::hardware_concurrency (), local_align);
         distances[a, b] = dists;
         distances[a, b] = dists;
 
@@ -202,8 +203,10 @@ public:
      */
     double getWeightedDistance (path a, path b)
     {
-        auto dists = getFeatureDistances (a, b);
-        return Distance::weightedPNorm (dists, feature_weights);
+        //        auto dists = getFeatureDistances (a, b);
+        //        return Distance::weightedPNorm (dists, feature_weights);
+        return Distance::deepSimilarity (FileUtils::getAudioFromAnalysisFile (a),
+                                         FileUtils::getAudioFromAnalysisFile (b));
         // return Distance::weightedPNorm<double> (dists, featureWeights);
     }
 
