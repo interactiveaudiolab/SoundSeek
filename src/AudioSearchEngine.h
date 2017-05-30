@@ -10,15 +10,15 @@
 #define AudioSearchEngine_hpp
 
 #include "Common.h"
-#include "FileUtils.h"
-#include "Distance.h"
-#include "libs/json.hpp"
 #include "Config.h"
-
-#include <boost/progress.hpp>
+#include "Distance.h"
+#include "FileUtils.h"
+#include "libs/json.hpp"
 #include <boost/filesystem.hpp>
+#include <boost/progress.hpp>
 #include <ctime>
 #include <limits>
+
 
 // serialization
 #include <boost/serialization/map.hpp>
@@ -205,7 +205,7 @@ public:
     {
         //        auto dists = getFeatureDistances (a, b);
         //        return Distance::weightedPNorm (dists, feature_weights);
-        return Distance::deepSimilarity (FileUtils::getAudioFromAnalysisFile (a),
+        return 1. - Distance::deepSimilarity (FileUtils::getAudioFromAnalysisFile (a),
                                          FileUtils::getAudioFromAnalysisFile (b));
         // return Distance::weightedPNorm<double> (dists, featureWeights);
     }
@@ -283,7 +283,11 @@ public:
 
         for (int i = 0; i < num_results; ++i)
         {
-            if (sounds[indices[i]] != query) results.push_back (sounds[indices[i]]);
+            if (sounds[indices[i]] != query) {
+                cout << sounds[indices[i]] << endl;
+                cout << "+\t" << dists[indices[i]] << endl;
+                results.push_back (sounds[indices[i]]);
+            }
         }
         double duration = (clock () - start) / (double) CLOCKS_PER_SEC;
         cerr << "Searched " << sounds.size () << " sounds in " << duration << " seconds" << endl;

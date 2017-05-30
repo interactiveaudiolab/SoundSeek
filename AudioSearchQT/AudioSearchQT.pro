@@ -36,15 +36,13 @@ HEADERS = \
 SOURCES = \
     main.cpp \
     audiorecorder.cpp \
-    ../src/AudioSearchEngine.cpp \
     ../src/FeatureExtractor.cpp \
     node.cpp \
     graphwidget.cpp \
     edge.cpp \
     ../src/Distance.cpp \
     common-utils.cpp \
-    ../src/FileUtils.cpp \
-    libs/qcustomplot/qcustomplot.cpp \
+     libs/qcustomplot/qcustomplot.cpp \
     audiothumbnail.cpp
 
 FORMS += audiorecorder.ui \

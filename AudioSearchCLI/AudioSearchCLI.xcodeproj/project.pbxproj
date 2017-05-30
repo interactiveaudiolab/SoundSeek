@@ -10,13 +10,13 @@
 		4C0355191E8EE7DD006069DB /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C03550F1E8EE7DD006069DB /* Distance.cpp */; };
 		4C03551A1E8EE7DD006069DB /* FeatureExtractor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C0355111E8EE7DD006069DB /* FeatureExtractor.cpp */; };
 		4C30BF9F1E8994E60071EC8A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C30BF9E1E8994E60071EC8A /* main.cpp */; };
+		4C5D35AE1EDCCEB000C3845C /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C5D35AD1EDCCEB000C3845C /* Python.framework */; };
 		4C8D85C71E2D4EA2001DA40E /* libAquila.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C8D85C61E2D4EA2001DA40E /* libAquila.a */; };
 		4CA7842B1E491BD300133ADC /* libboost_thread-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CA7842A1E491BD300133ADC /* libboost_thread-mt.a */; };
 		4CDF9D0B1E0072690092C5A5 /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CDF9D091E0072690092C5A5 /* libboost_filesystem.a */; };
 		4CDF9D0C1E0072690092C5A5 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CDF9D0A1E0072690092C5A5 /* libboost_system.a */; };
 		4CDF9D141E00803E0092C5A5 /* libessentia.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CDF9D131E00803E0092C5A5 /* libessentia.dylib */; };
 		4CE6960D1E974A250037AEE7 /* libboost_serialization.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE6960C1E974A250037AEE7 /* libboost_serialization.a */; };
-		4CE696101E974D260037AEE7 /* AudioSearchEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE6960E1E974D260037AEE7 /* AudioSearchEngine.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -523,15 +523,15 @@
 		4C205DC91E36B7780097E57E /* SplineFwd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplineFwd.h; sourceTree = "<group>"; };
 		4C30BF9E1E8994E60071EC8A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
 		4C49B3FE1E0068FE00103BEC /* AudioSearchCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AudioSearchCLI; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C5D35AD1EDCCEB000C3845C /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = ../../../../../usr/local/Cellar/python/2.7.13/Frameworks/Python.framework; sourceTree = "<group>"; };
+		4C5D35AF1EDCCF5000C3845C /* DeepSimilarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeepSimilarity.h; sourceTree = "<group>"; };
 		4C8D85C61E2D4EA2001DA40E /* libAquila.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAquila.a; path = ../../../../../usr/local/lib/libAquila.a; sourceTree = "<group>"; };
 		4CA7842A1E491BD300133ADC /* libboost_thread-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_thread-mt.a"; path = "../../../../../usr/local/Cellar/boost/1.62.0/lib/libboost_thread-mt.a"; sourceTree = "<group>"; };
 		4CAA43AA1ECD23C600BFC656 /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		4CDF9D091E0072690092C5A5 /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = /usr/local/Cellar/boost/1.62.0/lib/libboost_filesystem.a; sourceTree = "<absolute>"; };
 		4CDF9D0A1E0072690092C5A5 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = /usr/local/Cellar/boost/1.62.0/lib/libboost_system.a; sourceTree = "<absolute>"; };
 		4CDF9D131E00803E0092C5A5 /* libessentia.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libessentia.dylib; path = /usr/local/Cellar/essentia/2.1_beta3/lib/libessentia.dylib; sourceTree = "<absolute>"; };
-		4CE6960B1E97408F0037AEE7 /* FileUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileUtils.cpp; sourceTree = "<group>"; };
 		4CE6960C1E974A250037AEE7 /* libboost_serialization.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_serialization.a; path = ../../../../../usr/local/Cellar/boost/1.62.0/lib/libboost_serialization.a; sourceTree = "<group>"; };
-		4CE6960E1E974D260037AEE7 /* AudioSearchEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioSearchEngine.cpp; sourceTree = "<group>"; };
 		4CE6960F1E974D260037AEE7 /* AudioSearchEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioSearchEngine.h; sourceTree = "<group>"; };
 		4CF3DD931EA540D500CE08B5 /* MULTI_ARRAY_SERIALIZATION.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MULTI_ARRAY_SERIALIZATION.hpp; sourceTree = "<group>"; };
 		4CF6BEF81EBBB5A0006E3C7C /* tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tests.h; sourceTree = "<group>"; };
@@ -542,6 +542,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C5D35AE1EDCCEB000C3845C /* Python.framework in Frameworks */,
 				4CE6960D1E974A250037AEE7 /* libboost_serialization.a in Frameworks */,
 				4CA7842B1E491BD300133ADC /* libboost_thread-mt.a in Frameworks */,
 				4C8D85C71E2D4EA2001DA40E /* libAquila.a in Frameworks */,
@@ -559,16 +560,15 @@
 			children = (
 				4C03550A1E8EE7DD006069DB /* AudioFeatures.h */,
 				4C03550B1E8EE7DD006069DB /* AudioObject.h */,
-				4CE6960E1E974D260037AEE7 /* AudioSearchEngine.cpp */,
 				4CE6960F1E974D260037AEE7 /* AudioSearchEngine.h */,
 				4C03550E1E8EE7DD006069DB /* Common.h */,
+				4C5D35AF1EDCCF5000C3845C /* DeepSimilarity.h */,
 				4C03550F1E8EE7DD006069DB /* Distance.cpp */,
 				4C0355101E8EE7DD006069DB /* Distance.h */,
 				4C0355111E8EE7DD006069DB /* FeatureExtractor.cpp */,
 				4C0355121E8EE7DD006069DB /* FeatureExtractor.h */,
 				4CAA43AA1ECD23C600BFC656 /* Config.h */,
 				4C0355131E8EE7DD006069DB /* FileUtils.h */,
-				4CE6960B1E97408F0037AEE7 /* FileUtils.cpp */,
 				4CF6BEF81EBBB5A0006E3C7C /* tests.h */,
 				4C0355141E8EE7DD006069DB /* libs */,
 			);
@@ -1669,6 +1669,7 @@
 		4C8D85C51E2D4EA1001DA40E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4C5D35AD1EDCCEB000C3845C /* Python.framework */,
 				4CE6960C1E974A250037AEE7 /* libboost_serialization.a */,
 				4CDF9D131E00803E0092C5A5 /* libessentia.dylib */,
 				4CDF9D091E0072690092C5A5 /* libboost_filesystem.a */,
@@ -1741,7 +1742,6 @@
 				4C03551A1E8EE7DD006069DB /* FeatureExtractor.cpp in Sources */,
 				4C0355191E8EE7DD006069DB /* Distance.cpp in Sources */,
 				4C30BF9F1E8994E60071EC8A /* main.cpp in Sources */,
-				4CE696101E974D260037AEE7 /* AudioSearchEngine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1839,6 +1839,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/python/2.7.13/Frameworks,
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1872,6 +1876,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/python/2.7.13/Frameworks,
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = "CLI=1";
 				HEADER_SEARCH_PATHS = (
 					/usr/local/Cellar/boost/1.62.0/include,

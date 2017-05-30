@@ -191,7 +191,7 @@ void AudioRecorder::toggleRecord()
     if (audioRecorder->state() == QMediaRecorder::StoppedState) {
         //audioRecorder->setAudioInput(boxValue(ui->audioDeviceBox).toString());
 
-        queryPath = QUrl::fromLocalFile(QUERY_DIR+QString(QUERY_PREFIX)+QTime::currentTime().toString(Qt::DefaultLocaleLongDate)+".wav");
+        queryPath = QUrl::fromLocalFile(QUERY_DIR+QString(QUERY_PREFIX)+QTime::currentTime().toString(Qt::DefaultLocaleLongDate).remove(" ")+".wav");
         setOutputLocation(queryPath);
         QAudioEncoderSettings settings;
 //        settings.setCodec(boxValue(ui->audioCodecBox).toString());

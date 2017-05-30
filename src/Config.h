@@ -39,7 +39,7 @@ static json load ()
         }
         catch (...)
         {
-            cerr << "Reading config file failed." << endl;
+	    std::cerr << "Reading config file failed." << endl;
         }
     }
 
@@ -56,7 +56,7 @@ static void save (json config)
     }
     catch (...)
     {
-        cerr << "Writing config file failed." << endl;
+	std::cerr << "Writing config file failed." << endl;
     }
 }
 }
