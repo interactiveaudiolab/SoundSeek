@@ -51,10 +51,12 @@ static pair<string, string> operator, (path path1, path path2)
 class AudioSearchEngine
 {
 public:
-    AudioSearchEngine ()
+    AudioSearchEngine (bool use_cache_ = true)
     {
         feature_weights.resize (AudioFeatures::num_features, 1);
-        loadDistances ();
+        use_cache = use_cache_;
+        if (use_cache)
+            loadDistances ();
 
         try
         {
@@ -73,7 +75,8 @@ public:
         json config = Config::load ();
         config["localAlign"] = local_align;
         Config::save (config);
-        saveDistances ();
+        if (use_cache)
+            saveDistances ();
     }
 
     /**
@@ -161,7 +164,8 @@ public:
         }
         double duration = (clock () - start) / (double) CLOCKS_PER_SEC;
         cerr << "Precalculated distances for " << sounds.size () << " sounds in " << duration << " seconds" << endl;
-        saveDistances ();
+        if (use_cache)
+            saveDistances ();
     }
 
     /**
@@ -321,7 +325,7 @@ private:
     // multi_array<vector<double>, 2> distances;
     map<pair<string, string>, vector<double>> distances;
     vector<double> feature_weights;
-    bool new_sounds_added, local_align;
+    bool new_sounds_added, local_align, use_cache;
 
     /**
      *  Return true if the SearchEngine has already calculated a distance for a pair of sounds
