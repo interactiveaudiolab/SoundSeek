@@ -54,6 +54,8 @@
 #include <QFile>
 #include <QDir>
 
+#include <ctime>
+
 #include "essentia/essentiamath.h"
 
 #include "../src/FileUtils.h"
@@ -72,7 +74,7 @@ using namespace boost::filesystem;
 AudioRecorder::AudioRecorder(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::AudioRecorder), mediaPlayer(parent), errorMessage(parent), graph(this),
-    outputLocationSet(false), queryRecorded(false), topResults(true), searchEngine()
+    outputLocationSet(false), queryRecorded(false), topResults(true), searchEngine(false)
 {
     ui->setupUi(this);
 
@@ -240,10 +242,14 @@ void AudioRecorder::search()
     //ui->resultViewButton->setEnabled(true);
     //ui->statusbar->showMessage("Search %d files", searchEngine.getNumSearchFiles());
     auto* parent = graph.findNode(queryPath);
+    clock_t start = clock ();
+
     foreach(path p, searchEngine.getNearestWeighted(QUrlToPath(queryPath), 7))
     {
         graph.addNode (parent, pathToUrl(p));
     }
+
+    cerr << "Searched in " << (clock () - start) / (double) CLOCKS_PER_SEC << " seconds" << endl;
 }
 
 void AudioRecorder::searchByPath(QUrl searchPath)
@@ -252,13 +258,18 @@ void AudioRecorder::searchByPath(QUrl searchPath)
     auto* parent = graph.findNode(searchPath);
     if (!parent)
         return;
+    clock_t start = clock ();
+
     foreach(path p, searchEngine.getNearestWeighted(QUrlToPath(searchPath), 10))
     {
         if (QString::fromStdString(p.string()).contains(QUERY_PREFIX))
             continue;
         cout << p << endl;
         graph.addNode (parent, pathToUrl(p.string()));
+
     }
+    cerr << "Searched in " << (clock () - start) / (double) CLOCKS_PER_SEC << " seconds" << endl;
+
 }
 
 
@@ -270,7 +281,7 @@ void AudioRecorder::setSearchDirectory()
         searchEngine.addDirectory(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()).toStdString(), true);
         //sleep(.01);
 
-        searchEngine.calcAllDistances();
+//        searchEngine.calcAllDistances();
         ui->searchDirLabel->setText(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()));
         ui->recordButton->setEnabled(true);
     }

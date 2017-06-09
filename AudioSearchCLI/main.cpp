@@ -10,12 +10,12 @@
 
 #include "../src/libs/catch.hpp"
 
-#include <stdio.h>
-#include <chrono>
 #include "../src/libs/json.hpp"
+#include <chrono>
+#include <stdio.h>
 //#include "../src/AudioSearchEngine.h"
-#include "../src/FileUtils.h"
 #include "../src/AudioSearchEngine.h"
+#include "../src/FileUtils.h"
 #include "../src/tests.h"
 
 #define CACHE_PATH "/Users/michael/InteractiveAudioLab/SoundSeek/caches/distcache.ar"
@@ -27,21 +27,22 @@ using namespace std;
 using namespace essentia;
 using nlohmann::json;
 
-int main (int argc, const char *argv[])
+int main(int argc, const char* argv[])
 {
+    //setenv("GLOG_minloglevel", "2", 1);
     //    int result = Catch::Session ().run (argc, argv);
-    Test::run_tests ();
+    Test::run_tests();
     // DBG (result);
     // Distance::testDTW ();
     // insert code here...
     path dirPath = argv[1];
     path queryPath = argv[2];
 
-    auto start = Clock::now ();
+    auto start = Clock::now();
 
     AudioSearchEngine engine;
-    engine.addDirectory (dirPath, true);
-    engine.reCalcAllDistances ();
+    engine.addDirectory(dirPath, true);
+    engine.reCalcAllDistances();
 
     // engine.addSearchDir (dirPath, true);
     // engine.removeAllAnalysisFiles ();
@@ -49,44 +50,39 @@ int main (int argc, const char *argv[])
     // engine.search (queryPath, .1);
     // engine.printFeatureInfo ();
 
-    auto results = engine.getNearestWeighted (queryPath);
+    auto results = engine.getNearestWeighted(queryPath);
 
     //    auto topResults = engine.getTopResults ();
-    auto resultsByFeature = engine.getNearestByFeature (queryPath);
+    auto resultsByFeature = engine.getNearestByFeature(queryPath);
     // engine.addSearchDir (filePath, true);
-    auto end = Clock::now ();
+    auto end = Clock::now();
 
-    cout << "\n\n########################################" << endl;
-    cout << "Query: \n+\t" << queryPath.filename () << endl;
-    cout << "Top results: " << endl;
-    for (int i = 0; i < std::min (10, (int) results.size ()); ++i)
-    {
-        try
-        {
-            cout << "+\t" << results[i] << endl;
-            cout << " " << engine.getWeightedDistance (queryPath, results[i]) << endl;
-        }
-        catch (...)
-        {
+    cout << "\n\n########################################" << std::endl;
+    cout << "Query: \n+\t" << queryPath.filename() << std::endl;
+    cout << "Top results: " << std::endl;
+    for (int i = 0; i < std::min(10, (int)results.size()); ++i) {
+        try {
+            cout << "+\t" << results[i] << std::endl;
+            cout << " " << engine.getWeightedDistance(queryPath, results[i]) << std::endl;
+        } catch (...) {
         }
     }
 
-    cout << "\nBest results by feature:" << endl;
-    for (int i = 0; i < AudioFeatures::num_features; ++i)
-    {
-        try
-        {
-            cout << "+ " << AudioFeatures::getAllFeatures ()[i] << " \t" << resultsByFeature[i].string () << endl;
-            cout << " " << engine.getFeatureDistances (queryPath, resultsByFeature[i])[i] << endl;
-        }
-        catch (...)
-        {
+    cout << "\nBest results by feature:" << std::endl;
+    for (int i = 0; i < AudioFeatures::num_features; ++i) {
+        try {
+            cout << "+ " << AudioFeatures::getAllFeatures()[i] << " \t"
+                 << resultsByFeature[i].string() << std::endl;
+            cout << " " << engine.getFeatureDistances(queryPath, resultsByFeature[i])[i]
+                 << std::endl;
+        } catch (...) {
         }
     }
-    cout << "########################################" << endl;
+    cout << "########################################" << std::endl;
 
-    cout << "\n\nSearched in: " << std::chrono::duration_cast<std::chrono::milliseconds> (end - start).count () / 1000.f
-         << "s" << endl;
+    cout << "\n\nSearched in: "
+         << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.f
+         << "s" << std::endl;
 
     //    std::system (string ("open " + queryPath.string ()).c_str ());
     //

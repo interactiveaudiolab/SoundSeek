@@ -9,7 +9,12 @@
 /* Begin PBXBuildFile section */
 		4C0355191E8EE7DD006069DB /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C03550F1E8EE7DD006069DB /* Distance.cpp */; };
 		4C03551A1E8EE7DD006069DB /* FeatureExtractor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C0355111E8EE7DD006069DB /* FeatureExtractor.cpp */; };
+		4C0DE03E1EE9D97D00568CE7 /* libcaffe.so.1.0.0 in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C0DE03D1EE9D97D00568CE7 /* libcaffe.so.1.0.0 */; };
+		4C0DE0401EE9DA0A00568CE7 /* libglog.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C0DE03F1EE9DA0A00568CE7 /* libglog.a */; };
+		4C0DE0421EE9DA2D00568CE7 /* libgflags.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C0DE0411EE9DA2D00568CE7 /* libgflags.2.2.0.dylib */; };
+		4C0DE0441EE9DA5B00568CE7 /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C0DE0431EE9DA5B00568CE7 /* libprotobuf.a */; };
 		4C30BF9F1E8994E60071EC8A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C30BF9E1E8994E60071EC8A /* main.cpp */; };
+		4C38722A1EDE134200268591 /* libcaffe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C3872291EDE134200268591 /* libcaffe.a */; };
 		4C5D35AE1EDCCEB000C3845C /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C5D35AD1EDCCEB000C3845C /* Python.framework */; };
 		4C8D85C71E2D4EA2001DA40E /* libAquila.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C8D85C61E2D4EA2001DA40E /* libAquila.a */; };
 		4CA7842B1E491BD300133ADC /* libboost_thread-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CA7842A1E491BD300133ADC /* libboost_thread-mt.a */; };
@@ -44,6 +49,10 @@
 		4C0355161E8EE7DD006069DB /* json.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = json.hpp; sourceTree = "<group>"; };
 		4C0355171E8EE7DD006069DB /* ThreadPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadPool.h; sourceTree = "<group>"; };
 		4C050F701E3FA8E1004EE3DC /* libboost_math_tr1f-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_math_tr1f-mt.a"; path = "../../../../../usr/local/Cellar/boost/1.62.0/lib/libboost_math_tr1f-mt.a"; sourceTree = "<group>"; };
+		4C0DE03D1EE9D97D00568CE7 /* libcaffe.so.1.0.0 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcaffe.so.1.0.0; path = ../../caffe/.build_release/lib/libcaffe.so.1.0.0; sourceTree = "<group>"; };
+		4C0DE03F1EE9DA0A00568CE7 /* libglog.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglog.a; path = ../../../../../usr/local/Cellar/glog/0.3.5_1/lib/libglog.a; sourceTree = "<group>"; };
+		4C0DE0411EE9DA2D00568CE7 /* libgflags.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgflags.2.2.0.dylib; path = ../../../../../usr/local/Cellar/gflags/2.2.0/lib/libgflags.2.2.0.dylib; sourceTree = "<group>"; };
+		4C0DE0431EE9DA5B00568CE7 /* libprotobuf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libprotobuf.a; path = ../../../../../usr/local/Cellar/protobuf/3.3.0/lib/libprotobuf.a; sourceTree = "<group>"; };
 		4C205BA81E36B7770097E57E /* Cholesky */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cholesky; sourceTree = "<group>"; };
 		4C205BA91E36B7770097E57E /* CholmodSupport */ = {isa = PBXFileReference; lastKnownFileType = text; path = CholmodSupport; sourceTree = "<group>"; };
 		4C205BAA1E36B7770097E57E /* Core */ = {isa = PBXFileReference; lastKnownFileType = text; path = Core; sourceTree = "<group>"; };
@@ -522,6 +531,7 @@
 		4C205DC81E36B7780097E57E /* SplineFitting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplineFitting.h; sourceTree = "<group>"; };
 		4C205DC91E36B7780097E57E /* SplineFwd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SplineFwd.h; sourceTree = "<group>"; };
 		4C30BF9E1E8994E60071EC8A /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
+		4C3872291EDE134200268591 /* libcaffe.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcaffe.a; path = ../../caffe/.build_release/lib/libcaffe.a; sourceTree = "<group>"; };
 		4C49B3FE1E0068FE00103BEC /* AudioSearchCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AudioSearchCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C5D35AD1EDCCEB000C3845C /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = ../../../../../usr/local/Cellar/python/2.7.13/Frameworks/Python.framework; sourceTree = "<group>"; };
 		4C5D35AF1EDCCF5000C3845C /* DeepSimilarity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeepSimilarity.h; sourceTree = "<group>"; };
@@ -542,6 +552,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C0DE0421EE9DA2D00568CE7 /* libgflags.2.2.0.dylib in Frameworks */,
+				4C0DE0401EE9DA0A00568CE7 /* libglog.a in Frameworks */,
+				4C0DE0441EE9DA5B00568CE7 /* libprotobuf.a in Frameworks */,
+				4C0DE03E1EE9D97D00568CE7 /* libcaffe.so.1.0.0 in Frameworks */,
+				4C38722A1EDE134200268591 /* libcaffe.a in Frameworks */,
 				4C5D35AE1EDCCEB000C3845C /* Python.framework in Frameworks */,
 				4CE6960D1E974A250037AEE7 /* libboost_serialization.a in Frameworks */,
 				4CA7842B1E491BD300133ADC /* libboost_thread-mt.a in Frameworks */,
@@ -558,8 +573,8 @@
 		4C0355091E8EE7DD006069DB /* src */ = {
 			isa = PBXGroup;
 			children = (
-				4C03550A1E8EE7DD006069DB /* AudioFeatures.h */,
 				4C03550B1E8EE7DD006069DB /* AudioObject.h */,
+				4C03550A1E8EE7DD006069DB /* AudioFeatures.h */,
 				4CE6960F1E974D260037AEE7 /* AudioSearchEngine.h */,
 				4C03550E1E8EE7DD006069DB /* Common.h */,
 				4C5D35AF1EDCCF5000C3845C /* DeepSimilarity.h */,
@@ -1669,6 +1684,11 @@
 		4C8D85C51E2D4EA1001DA40E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4C0DE0431EE9DA5B00568CE7 /* libprotobuf.a */,
+				4C0DE0411EE9DA2D00568CE7 /* libgflags.2.2.0.dylib */,
+				4C0DE03F1EE9DA0A00568CE7 /* libglog.a */,
+				4C0DE03D1EE9D97D00568CE7 /* libcaffe.so.1.0.0 */,
+				4C3872291EDE134200268591 /* libcaffe.a */,
 				4C5D35AD1EDCCEB000C3845C /* Python.framework */,
 				4CE6960C1E974A250037AEE7 /* libboost_serialization.a */,
 				4CDF9D131E00803E0092C5A5 /* libessentia.dylib */,
@@ -1855,6 +1875,13 @@
 					/usr/local/Cellar/zlib/1.2.8/include,
 					/usr/local/include/aquila,
 					/usr/local/include/eigen3,
+					/usr/local/include/glog,
+					"\"$(SRCROOT)/../../caffe/include\"",
+					/usr/local/include/gflags,
+					/usr/local/include,
+					/usr/local/cuda/include,
+					/usr/local/opt/openblas/include,
+					"/usr/local/include/google/**",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/boost/1.62.0/lib,
@@ -1862,6 +1889,12 @@
 					/usr/local/Cellar/sqlite/3.15.2/lib,
 					/usr/local/Cellar/zlib/1.2.8/lib,
 					/usr/local/lib,
+					/usr/local/cuda/lib/,
+					/Users/michael/InteractiveAudioLab/caffe/.build_release/lib,
+					/usr/local/opt/openblas/lib,
+					/usr/local/Cellar/glog/0.3.5_1/lib,
+					/usr/local/Cellar/gflags/2.2.0/lib,
+					/usr/local/Cellar/protobuf/3.3.0/lib,
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -1888,6 +1921,13 @@
 					/usr/local/Cellar/zlib/1.2.8/include,
 					/usr/local/include/aquila,
 					/usr/local/include/eigen3,
+					/usr/local/include/glog,
+					"\"$(SRCROOT)/../../caffe/include\"",
+					/usr/local/include/gflags,
+					/usr/local/include,
+					/usr/local/cuda/include,
+					/usr/local/opt/openblas/include,
+					"/usr/local/include/google/**",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/boost/1.62.0/lib,
@@ -1895,6 +1935,12 @@
 					/usr/local/Cellar/sqlite/3.15.2/lib,
 					/usr/local/Cellar/zlib/1.2.8/lib,
 					/usr/local/lib,
+					/usr/local/cuda/lib/,
+					/Users/michael/InteractiveAudioLab/caffe/.build_release/lib,
+					/usr/local/opt/openblas/lib,
+					/usr/local/Cellar/glog/0.3.5_1/lib,
+					/usr/local/Cellar/gflags/2.2.0/lib,
+					/usr/local/Cellar/protobuf/3.3.0/lib,
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
