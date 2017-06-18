@@ -105,6 +105,7 @@ private slots:
     void toggleResultView();
     void stopAudio();
     void playLastAudio();
+    void setQueryFromFile();
 
     void onPlayerStateChanged(QMediaPlayer::State state);
     void updateStatus(QMediaRecorder::Status);

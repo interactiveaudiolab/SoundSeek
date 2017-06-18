@@ -101,6 +101,7 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
 //    ui->resultViewButton->setEnabled(false);
     ui->graphLayout->addWidget(&graph);
     ui->recordButton->setEnabled(false);
+    ui->openQueryButton->setEnabled(false);
 
 //    ui->topResults->setEnabled(false);
 //    ui->ResultsLabel->setEnabled(false);
@@ -162,15 +163,15 @@ void AudioRecorder::onStateChanged(QMediaRecorder::State state)
 {
     switch (state) {
     case QMediaRecorder::RecordingState:
-        ui->recordButton->setText(tr("Stop"));
+        ui->recordButton->setText(tr("■ Stop"));
         //ui->pauseButton->setText(tr("Pause"));
         break;
     case QMediaRecorder::PausedState:
-        ui->recordButton->setText(tr("Stop"));
+        ui->recordButton->setText(tr("■ Stop"));
         //ui->pauseButton->setText(tr("Resume"));
         break;
     case QMediaRecorder::StoppedState:
-        ui->recordButton->setText(tr("Record"));
+        ui->recordButton->setText(tr("● Record"));
         //ui->pauseButton->setText(tr("Pause"));
         break;
     }
@@ -228,6 +229,23 @@ void AudioRecorder::toggleRecord()
     }
 }
 
+void AudioRecorder::setQueryFromFile() {
+    try {
+        queryPath = QFileDialog::getOpenFileUrl(this, "Open a Folder of Audio");
+
+        queryRecorded = true;
+//        ui->searchButton->setEnabled(true);
+        ui->playQueryButton->setEnabled(true);
+        ui->waveform->setAudio(queryPath);
+        mediaPlayer.setMedia(queryPath);
+        graph.clear();
+        graph.addNode(nullptr, queryPath, 0);
+        searchByPath(queryPath);
+
+    }
+    catch(...) {}
+}
+
 // for finding neighbors of the initial query
 void AudioRecorder::search()
 {
@@ -274,6 +292,8 @@ void AudioRecorder::setSearchDirectory()
         searchEngine.calcAllDistances();
         ui->searchDirLabel->setText(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()));
         ui->recordButton->setEnabled(true);
+        ui->openQueryButton->setEnabled(true);
+
     }
     catch(...) {}
 }

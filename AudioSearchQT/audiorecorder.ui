@@ -131,25 +131,6 @@
             <property name="topMargin">
              <number>0</number>
             </property>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="playQueryButton">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>24</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Play</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="1">
              <widget class="QPushButton" name="recordButton">
               <property name="minimumSize">
@@ -168,7 +149,33 @@
                <bool>false</bool>
               </property>
               <property name="text">
-               <string>Record</string>
+               <string>● Record</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="playQueryButton">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Play</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QPushButton" name="openQueryButton">
+              <property name="text">
+               <string>Open File</string>
               </property>
              </widget>
             </item>
@@ -293,8 +300,8 @@
    <slot>toggleRecord()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>241</x>
-     <y>284</y>
+     <x>188</x>
+     <y>297</y>
     </hint>
     <hint type="destinationlabel">
      <x>113</x>
@@ -334,6 +341,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>openQueryButton</sender>
+   <signal>clicked()</signal>
+   <receiver>AudioRecorder</receiver>
+   <slot>setQueryFromFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>251</x>
+     <y>286</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>297</x>
+     <y>515</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>setOutputLocation()</slot>
@@ -346,5 +369,6 @@
   <slot>toggleResultView()</slot>
   <slot>stopAudio()</slot>
   <slot>playLastAudio()</slot>
+  <slot>setQueryFromFile()</slot>
  </slots>
 </ui>
