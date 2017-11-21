@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "4E051CC284F7937C9005FC5F7714D6BC6FCCC151",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "4CD8186CE66A0AD46BD21DF2E9F43E65780546D2" : 0,
+    "4E051CC284F7937C9005FC5F7714D6BC6FCCC151" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D5740DEF-1A07-484B-8FB4-32725EE9931A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "4CD8186CE66A0AD46BD21DF2E9F43E65780546D2" : "caffe\/",
+    "4E051CC284F7937C9005FC5F7714D6BC6FCCC151" : "SoundSeek\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "DistanceCalculator",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "DistanceCalculator\/DistanceCalculator.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/BVLC\/caffe",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "4CD8186CE66A0AD46BD21DF2E9F43E65780546D2"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/interactiveaudiolab\/SoundSeek",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "4E051CC284F7937C9005FC5F7714D6BC6FCCC151"
+    }
+  ]
+}
