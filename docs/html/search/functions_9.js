@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['removeallanalysisfiles',['removeAllAnalysisFiles',['../class_audio_search_engine.html#a3860ba84353d123e775675ef50028bc1',1,'AudioSearchEngine']]],
-  ['removeanalysisfiles',['removeAnalysisFiles',['../class_file_utils.html#af08891de7dcbc312db30815c50eebc7e',1,'FileUtils']]]
+  ['keypressevent',['keyPressEvent',['../class_audio_recorder.html#af148333359bacb628eb983ca92d08aad',1,'AudioRecorder::keyPressEvent()'],['../class_graph_widget.html#aec782f01795f0b6720cc5e5fa2ff332f',1,'GraphWidget::keyPressEvent()']]]
 ];

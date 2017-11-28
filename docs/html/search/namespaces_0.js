@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['distance',['Distance',['../namespace_distance.html',1,'']]]
+  ['audioreader',['AudioReader',['../namespace_audio_reader.html',1,'']]]
 ];

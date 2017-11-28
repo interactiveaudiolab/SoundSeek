@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['init',['init',['../class_feature_extractor.html#ae5bac6be7c2f7fb1b6cd7329988d5c7f',1,'FeatureExtractor']]],
-  ['isanalysisfile',['isAnalysisFile',['../class_file_utils.html#a959f9b93d2971bb0dfa4a727c8d990b7',1,'FileUtils']]]
+  ['hassound',['hasSound',['../class_audio_search_engine.html#ab4f47e9b39d037675db988d7db179559',1,'AudioSearchEngine']]],
+  ['hop_5fsize',['hop_size',['../class_feature_extractor.html#a649d3dba547ee4696aae95f79ebb54d4',1,'FeatureExtractor']]]
 ];

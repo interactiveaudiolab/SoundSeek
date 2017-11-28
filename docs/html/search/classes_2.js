@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['searchresult',['searchResult',['../structsearch_result.html',1,'']]]
+  ['featureextractor',['FeatureExtractor',['../class_feature_extractor.html',1,'']]]
 ];
