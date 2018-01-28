@@ -30,7 +30,8 @@ HEADERS = \
     ../src/libs/MULTI_ARRAY_SERIALIZATION.hpp \
     libs/qcustomplot/qcustomplot.h \
     audioreader.h \
-    audiothumbnail.h
+    audiothumbnail.h \
+    ../src/Config.h
 
 SOURCES = \
     main.cpp \

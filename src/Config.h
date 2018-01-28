@@ -12,7 +12,7 @@
 #include "libs/json.hpp"
 #include <iostream>
 
-#define DEFAULT_LOCAL true
+#define DEFAULT_LOCAL false
 
 namespace Config
 {
@@ -24,6 +24,22 @@ static path configFilePath ()
 {
     return path (string (getenv ("HOME")) + string (APP_SUPPORT) + string (CFG_PATH));
 }
+
+
+static void save (json config)
+{
+    path config_path = configFilePath ();
+    try
+    {
+        std::ofstream o (config_path.string ());
+        o << std::setw (4) << config << std::endl;
+    }
+    catch (...)
+    {
+        cerr << "Writing config file failed." << endl;
+    }
+}
+
 
 static json load ()
 {
@@ -42,22 +58,13 @@ static json load ()
             cerr << "Reading config file failed." << endl;
         }
     }
+    else
+    {
+        config["localAlign"] = DEFAULT_LOCAL;
+        save(config);
+    }
 
     return config;
-}
-
-static void save (json config)
-{
-    path config_path = configFilePath ();
-    try
-    {
-        std::ofstream o (config_path.string ());
-        o << std::setw (4) << config << std::endl;
-    }
-    catch (...)
-    {
-        cerr << "Writing config file failed." << endl;
-    }
 }
 }
 
