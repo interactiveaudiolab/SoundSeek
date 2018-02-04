@@ -282,7 +282,7 @@ public:
 
         vector<path> results;
 
-        for (int i = 0; i < num_results; ++i)
+        for (int i = 0; i < std::min(num_results, (int)sounds.size()); ++i)
         {
             if (sounds[indices[i]] != query) results.push_back (sounds[indices[i]]);
         }
