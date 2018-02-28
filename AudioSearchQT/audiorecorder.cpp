@@ -53,6 +53,7 @@
 #include <QTime>
 #include <QFile>
 #include <QDir>
+#include <QProgressDialog>
 
 #include "essentia/essentiamath.h"
 
@@ -102,9 +103,6 @@ AudioRecorder::AudioRecorder(QWidget *parent) :
     ui->graphLayout->addWidget(&graph);
     ui->recordButton->setEnabled(false);
     ui->openQueryButton->setEnabled(false);
-
-//    ui->topResults->setEnabled(false);
-//    ui->ResultsLabel->setEnabled(false);
 
     connect(this, SIGNAL(playerStateChanged(bool)), ui->waveform, SLOT(setIsPlaying(bool)));
     connect(ui->waveform, SIGNAL(playButtonClicked()), this, SLOT(toggleAudio()));
@@ -225,7 +223,11 @@ void AudioRecorder::toggleRecord()
         mediaPlayer.setMedia(queryPath);
         graph.clear();
         graph.addNode(nullptr, queryPath, 0);
+        QProgressDialog progress("Analyzing...", "Cancel", 0, 0, this);
+        progress.setWindowModality(Qt::WindowModal);
+        progress.setMinimumDuration(1000);
         searchByPath(queryPath);
+        progress.setValue(0);
     }
 }
 
@@ -286,10 +288,11 @@ void AudioRecorder::setSearchDirectory()
 {
     try {
         QUrl dirName = QFileDialog::getExistingDirectoryUrl(0, "Open a Folder of Audio", QUrl::fromLocalFile("/Applications/SoundSeek/audio/"), QFileDialog::ShowDirsOnly);
+
         searchEngine.addDirectory(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()).toStdString(), true);
         //sleep(.01);
 
-        searchEngine.calcAllDistances();
+        searchEngine.calcAllDistances(this);
         ui->searchDirLabel->setText(QUrl::fromPercentEncoding(dirName.toLocalFile().toLocal8Bit()));
         ui->recordButton->setEnabled(true);
         ui->openQueryButton->setEnabled(true);

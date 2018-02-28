@@ -15,6 +15,9 @@
 #include "libs/json.hpp"
 #include "Config.h"
 
+#include <QProgressDialog>
+#include <QWidget>
+
 #include <boost/progress.hpp>
 #include <boost/filesystem.hpp>
 #include <ctime>
@@ -140,16 +143,27 @@ public:
     /**
      *  Calculate distances between every pair of sounds in the databse
      */
-    void calcAllDistances ()
+    void calcAllDistances (QWidget* parent=nullptr)
     {
         DBG ("Calculating all distances.");
 
 #ifdef DEBUG
         progress_display show_progress (sounds.size ());
 #endif
+        QProgressDialog progress("Analyzing sound library...", "Cancel", 0, sounds.size(), parent);
+        progress.setWindowModality(Qt::WindowModal);
+
+
         clock_t start = clock ();
         for (int i = 0; i < sounds.size (); ++i)
         {
+            if (progress.wasCanceled())
+            {
+                distances.clear();
+                break;
+            }
+            progress.setValue(i);
+
             for (int j = i; j < sounds.size (); ++j)
             {
                 if (distances[sounds[i], sounds[j]].size () > 0) continue;
@@ -164,9 +178,11 @@ public:
         }
         double duration = (clock () - start) / (double) CLOCKS_PER_SEC;
         cerr << "Precalculated distances for " << sounds.size () << " sounds in " << duration << " seconds" << endl;
+        progress.setValue(sounds.size());
         if (use_cache)
             saveDistances ();
     }
+
 
     /**
      *  Delete any cached distance values, recalculate all.
