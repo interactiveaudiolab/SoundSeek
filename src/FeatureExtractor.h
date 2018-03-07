@@ -11,9 +11,9 @@
 #include <essentia/algorithmfactory.h>
 #include "AudioFeatures.h"
 
-#define DEFAULT_FRAMESIZE 2048
-#define DEFAULT_HOPSIZE 2048
-#define DEFAULT_SAMPLERATE 16000
+#define DEFAULT_FRAMESIZE 4096
+#define DEFAULT_HOPSIZE 4096
+#define DEFAULT_SAMPLERATE 11025
 
 using namespace std;
 using namespace essentia;

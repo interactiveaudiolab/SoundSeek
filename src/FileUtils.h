@@ -9,7 +9,7 @@
 #define FileUtils_h
 
 #include <boost/filesystem.hpp>
-#define AFILE_EXT ".afr16k2048"
+#define AFILE_EXT ".afr"
 
 using namespace std;
 using namespace boost::filesystem;
