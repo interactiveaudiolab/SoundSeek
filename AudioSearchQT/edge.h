@@ -58,7 +58,7 @@
 #define EDGE_H
 
 #include <QGraphicsItem>
-
+#include <QGraphicsDropShadowEffect>
 class Node;
 
 //! [0]
@@ -81,6 +81,7 @@ protected:
 
 private:
     Node *source, *dest;
+    QGraphicsDropShadowEffect shadow;
 
     QPointF sourcePoint;
     QPointF destPoint;

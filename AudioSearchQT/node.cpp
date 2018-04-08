@@ -74,10 +74,14 @@ Node::Node(GraphWidget *graphWidget)
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(1);
-    color.setHsvF(rand()%100/100.f, .1, 1);
+    color.setHsvF(rand()%80/80.f + .2f, .2, 1);
     radius = 20;
     rating = 0;
+    shadow.setBlurRadius(7);
+    shadow.setXOffset(1);
+    shadow.setYOffset(1);
 
+    this->setGraphicsEffect(&shadow);
 }
 
 void Node::addEdge(Edge *edge)
@@ -163,12 +167,14 @@ QPainterPath Node::shape() const
 
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->setRenderHint(QPainter::HighQualityAntialiasing);
     painter->setPen(Qt::NoPen);
     if (rating == -1) {
         painter->setBrush(QBrush(Qt::white));
         painter->drawEllipse(-1 * radius / 2, -1 * radius / 2, radius, radius);
 
-        painter->setPen(QPen(Qt::lightGray, 0));
+        painter->setPen(QPen(Qt::darkGray, 0));
         painter->drawEllipse(-1 * radius / 2, -1 * radius / 2, radius, radius);
     }
     else {
@@ -176,7 +182,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
         painter->drawEllipse(-1 * radius / 2, -1 * radius / 2, radius, radius);
 
-        painter->setPen(QPen(Qt::black, 0));
+        painter->setPen(QPen(Qt::darkGray, 0));
         painter->drawEllipse(-1 * radius / 2, -1 * radius / 2, radius, radius);
     }
     if (rating > 0) {

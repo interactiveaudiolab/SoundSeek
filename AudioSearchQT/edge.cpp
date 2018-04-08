@@ -74,6 +74,12 @@ Edge::Edge(Node *sourceNode, Node *destNode)
     dest->addEdge(this);
     setZValue(-1);
     adjust();
+    shadow.setBlurRadius(7);
+    shadow.setXOffset(1);
+    shadow.setYOffset(1);
+
+    this->setGraphicsEffect(&shadow);
+
 }
 
 Node *Edge::sourceNode() const
@@ -122,13 +128,14 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     if (!source || !dest)
         return;
-
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->setRenderHint(QPainter::HighQualityAntialiasing);
     QLineF line(sourcePoint, destPoint);
     if (qFuzzyCompare(line.length(), qreal(0.)))
         return;
 
     // Draw the line itself
-    painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter->setPen(QPen(Qt::black, .5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawLine(line);
     // Draw the arrows
     double angle = ::acos(line.dx() / line.length());

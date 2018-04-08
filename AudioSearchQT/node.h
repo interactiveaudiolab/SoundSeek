@@ -66,6 +66,7 @@
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QPolygonF>
+#include <QGraphicsDropShadowEffect>
 
 #include "audiorecorder.h"
 #include "starpolygon.h"
@@ -122,6 +123,7 @@ private:
     Node* parent;
     QPointF newPos;
     GraphWidget *graph;
+    QGraphicsDropShadowEffect shadow;
     bool expanded;
     QColor color;
     QUrl audioFile;
