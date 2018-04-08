@@ -12,6 +12,6 @@ SoundSeek requires ffmpeg to be installed using hombrew.
 
 Install SoundSeek
 
-- Download the latest SoundSeek.dmg from the [releases page.](https://github.com/interactiveaudiolab/SoundSeek/releases)
+- Download the latest SoundSeek.dmg from the [releases page.](https://github.com/interactiveaudiolab/SoundSeek/releases/latest)
 
 - Mount the dmg, and copy SoundSeek.app to your applications folder.
