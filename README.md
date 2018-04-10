@@ -29,8 +29,8 @@ Install SoundSeek
 
 - Sound seek will display connected graph of nodes. Each node is the closest audio file in the directory, as measured along one feature.
 
-- Click on a node to hear that file
+- Click on a node to hear that file.
 
-- Double click on a node to have SoundSeek return a new set of files that are close to this file
+- Double click on a node to have SoundSeek return a new set of files that are close to this file.
 
-- Once you've found the file you want, right click on its node to open in finder
+- Once you've found the file you want, right click on its node to open it in the finder.
