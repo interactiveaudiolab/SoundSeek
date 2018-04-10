@@ -33,4 +33,4 @@ Install SoundSeek
 
 - Double click on a node to have SoundSeek return a new set of files that are close to this file
 
-- Once you've found the file you want, right click on its node to see its location in the finder
+- Once you've found the file you want, right click on its node to open in finder
